@@ -28,7 +28,7 @@ type Config struct {
 	}
 	Mongodb struct{
 		Host      string   `default:"127.0.0.1"`
-		Port      string   `default:"7211"`
+		Port      string   `default:"27017"`
 		User      string   `default:"root"`
 		Password  string
 		Dbname    string
