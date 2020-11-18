@@ -13,5 +13,5 @@ import (
 func TestInitcfg(t *testing.T) {
 	configFile:="./dev.yml"
 	_ = Initcfg(configFile)
-	fmt.Print(config.Mysql.Dbname)
+	fmt.Print(config.Redis.Password)
 }

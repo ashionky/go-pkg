@@ -20,7 +20,7 @@ type Config struct {
 	}
 
 	Mysql struct {
-		Host string      `default:"127.0.0.1"`
+		Host string      `default:"127.0.0.1:3306"`
 		User      string `default:"root"`
 		Password  string
 		Dbname    string

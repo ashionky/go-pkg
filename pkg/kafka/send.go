@@ -49,7 +49,7 @@ func Init() {
 	for _, ip := range strings.Split(ips, ",") {
 		Addresses = append(Addresses, ip)
 	}
-	log.GetLogger().Info("kafka brokers=====", ips)
+	log.Info("kafka brokers=====", ips)
 }
 
 /**
@@ -73,13 +73,13 @@ func SendEvent(eventData *ReportEvent) error {
 	}
 	jsonData, err := json.Marshal(eventData)
 	if err != nil {
-		log.GetLogger().Errorf("json marshal err: %+v %v", eventData, err)
+		log.Info("json marshal err: %+v %v", eventData, err)
 		return err
 	}
 
 	p, err := sarama.NewSyncProducer(Addresses, getKafkaConfig())
 	if err != nil {
-		log.GetLogger().Errorf("sarama.NewSyncProducer err, message=%s", err)
+		log.Info("sarama.NewSyncProducer err, message=%s", err)
 		go recordFailEvent(eventData)
 		return err
 	}
@@ -91,11 +91,11 @@ func SendEvent(eventData *ReportEvent) error {
 	}
 	part, offset, err := p.SendMessage(msg)
 	if err != nil {
-		log.GetLogger().Errorf("publish event err: %v", err)
+		log.Info("publish event err: %v", err)
 		go recordFailEvent(eventData)
 		return err
 	} else {
-		log.GetLogger().Debugf(string(jsonData)+"send message success，partition=%d, offset=%d \n", part, offset)
+		log.Info(string(jsonData)+"send message success，partition=%d, offset=%d \n", part, offset)
 	}
 	return nil
 }
@@ -121,13 +121,13 @@ func SendOrderEvent(eventData *ReportEvent) error {
 	}
 	jsonData, err := json.Marshal(eventData)
 	if err != nil {
-		log.GetLogger().Errorf("json marshal err: %+v %v", eventData, err)
+		log.Info("json marshal err: %+v %v", eventData, err)
 		return err
 	}
 
 	p, err := sarama.NewSyncProducer(Addresses, getKafkOrderConfig())
 	if err != nil {
-		log.GetLogger().Errorf("sarama.NewSyncProducer err, message=%s", err)
+		log.Info("sarama.NewSyncProducer err, message=%s", err)
 		go recordFailEvent(eventData)
 		return err
 	}
@@ -140,11 +140,11 @@ func SendOrderEvent(eventData *ReportEvent) error {
 	}
 	part, offset, err := p.SendMessage(msg)
 	if err != nil {
-		log.GetLogger().Errorf("publish event err: %v", err)
+		log.Info("publish event err: %v", err)
 		go recordFailEvent(eventData)
 		return err
 	} else {
-		log.GetLogger().Debugf("msgId:"+eventData.Id+",send message success，partition=%d, offset=%d \n", part, offset)
+		log.Info("msgId:"+eventData.Id+",send message success，partition=%d, offset=%d \n", part, offset)
 	}
 	return nil
 }
@@ -223,7 +223,7 @@ func publishMultiEvent(sendTopic string, eventList []ReportEvent, isOrder bool) 
 	}
 	p, err := sarama.NewSyncProducer(Addresses, kafakcfg)
 	if err != nil {
-		log.GetLogger().Error("sarama.NewSyncProducer err, message=%s \n", err)
+		log.Info("sarama.NewSyncProducer err, message=%s \n", err)
 		return err
 	}
 	defer p.Close()
@@ -238,7 +238,7 @@ func publishMultiEvent(sendTopic string, eventList []ReportEvent, isOrder bool) 
 
 		jsonData, err := json.Marshal(eventData)
 		if err != nil {
-			log.GetLogger().Errorf("json marshal err: %+v %v", eventData, err)
+			log.Info("json marshal err: %+v %v", eventData, err)
 			return nil
 		}
 		msg := &sarama.ProducerMessage{
@@ -254,7 +254,7 @@ func publishMultiEvent(sendTopic string, eventList []ReportEvent, isOrder bool) 
 
 	err = p.SendMessages(msgs)
 	if err != nil {
-		log.GetLogger().Errorf("publish event err: %v", err)
+		log.Info("publish event err: %v", err)
 		return err
 	}
 	return nil

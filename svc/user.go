@@ -7,7 +7,6 @@ package svc
 
 import (
 	"encoding/json"
-	"go-pkg/errcode"
 	"go-pkg/model"
 	"go-pkg/params"
 	"go-pkg/pkg/db"
@@ -18,18 +17,18 @@ import (
 )
 
 // 用户登陆
-func SignIn(param *params.SigninReq) (rsp *params.SigninRsp, ae errcode.APIError) {
+func SignIn(param *params.SigninReq) (rsp *params.SigninRsp, err error) {
 	var user model.User
-	err := db.GetDB().Model(&model.User{}).Where(nil).First(&user).Error
+	err = db.GetDB().Model(&model.User{}).Where(nil).First(&user).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return nil, errcode.UserNotExists
+			return nil, err
 		}
-		return nil, errcode.MysqlFailed
+		return nil, err
 	}
 
 	if user.Password != param.Password {
-		return nil, errcode.UsernameOrPasswordError
+		return nil, err
 	}
 
 	// 生成token
@@ -46,7 +45,7 @@ func SignIn(param *params.SigninReq) (rsp *params.SigninRsp, ae errcode.APIError
 
 	tokenData, err := json.Marshal(ut)
 	if err != nil {
-		return nil, errcode.InternalError
+		return nil, err
 	}
 
 	// 把以前的token干掉
@@ -61,24 +60,24 @@ func SignIn(param *params.SigninReq) (rsp *params.SigninRsp, ae errcode.APIError
 
 	// todo 把用户信息写到缓存，可提高访问效率
 
-	return rsp, errcode.Success
+	return rsp, nil
 }
 
 
 // 用户登出
-func SignOut(token string) errcode.APIError {
+func SignOut(token string) error {
 	tokenData, err := redis.Get(util.FormatTokenUserKey(token))
 	if err != nil {
-		return errcode.RedisError
+		return err
 	}
 	redis.Delete(util.FormatTokenUserKey(token))
 
 	ut := util.UserToken{}
 	err = json.Unmarshal(tokenData, &ut)
 	if err != nil {
-		return errcode.InternalError
+		return err
 	}
 	redis.Delete(util.FormatUserTokenKey(ut.UID))
 
-	return errcode.Success
+	return nil
 }

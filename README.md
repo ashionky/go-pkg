@@ -2,7 +2,7 @@ go-pkg
 
 ##整理各类工具方法,方便搭建基础框架
 ```json
-配置中数据获取   pkg/cfg  
+配置中数据获取     pkg/cfg  
 mysql、sqlite    pkg/db
 redis：     pkg/redis
 mongodb：   pkg/mongodb

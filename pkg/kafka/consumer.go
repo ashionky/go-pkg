@@ -25,7 +25,7 @@ func NewConsumerHandler(topic string, groupID string, ctx1 context.Context, w *s
 	ctx, cancel := context.WithCancel(context.Background())
 	consumerGroup, err := sarama.NewConsumerGroup(Addresses, groupID, config)
 	if err != nil {
-		log.GetLogger().Errorf("Create consumerGroup error, %v", err)
+		log.Info("Create consumerGroup error, %v", err)
 	}
 	// 子协程的WaitGroup
 	wg := &sync.WaitGroup{}
@@ -36,32 +36,31 @@ func NewConsumerHandler(topic string, groupID string, ctx1 context.Context, w *s
 		for {
 			// 为了重试
 			if err := consumerGroup.Consume(ctx, topics, handler); err != nil {
-				log.GetLogger().Errorf("Error from consumer: %v", err)
+				log.Info("Error from consumer: %v", err)
 			}
 			// check if context was cancelled, signaling that the consumer should stop
 			if ctx.Err() != nil {
 				return
 			}
-			//handler.ready = make(chan bool)
 		}
 	}()
 
 	// 记录错误
 	go func() {
 		for err := range consumerGroup.Errors() {
-			log.GetLogger().Errorf("Kafka consumerGroup error, %v", err)
+			log.Error("Kafka consumerGroup error, %v", err)
 		}
 	}()
 	// 监听主协程的上下文
 	select {
 	case <-ctx1.Done():
-		log.GetLogger().Errorf("terminating: context cancelled")
+		log.Error("terminating: context cancelled")
 	}
 	// 有中断信号，就关闭当前的上下文，通知消费者停止拉取
 	cancel()
 	// 等待消费者处理完已拉取下来的信息
 	wg.Wait()
 	if err = consumerGroup.Close(); err != nil {
-		log.GetLogger().Errorf("Error closing client: %v", err)
+		log.Error("Error closing client: %v", err)
 	}
 }

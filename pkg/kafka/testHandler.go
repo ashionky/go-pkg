@@ -24,7 +24,7 @@ func (handler TestEventHandler) HandleKafkaMsg(message *ReportEvent) (err error)
 
 		CopyTestEvent(message)  //记录已处理的消息
 	default:
-		log.GetLogger().Warn("can not process event:" + message.Type)
+		log.Info("can not process event:" + message.Type)
 	}
 	return
 }
@@ -36,7 +36,7 @@ func (handler TestEventHandler) ConsumeClaim(sess sarama.ConsumerGroupSession, c
 		eventmsg := ReportEvent{}
 		err := json.Unmarshal(msg.Value, &eventmsg)
 		if err != nil {
-			log.GetLogger().Errorf("parse kafka message error: %v", err)
+			log.Info("parse kafka message error: %v", err)
 		}
 		handler.HandleKafkaMsg(&eventmsg)
 

@@ -9,31 +9,32 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"go-pkg/errcode"
+	"go-pkg/constant"
 	"go-pkg/params"
 	"go-pkg/pkg/redis"
+	"go-pkg/pkg/vo"
 	"go-pkg/svc"
 	"go-pkg/util"
-	"net/http"
 	"strings"
 	"time"
 )
 
 // 鉴权处理器，pri的接口都需要鉴权才能访问
 func Authorize(c *gin.Context) {
+	res := vo.GetDefaultResult()
 	token := c.GetHeader("X-Token")
 	if token == "" {
 		// 没有登陆过
-		c.AbortWithStatusJSON(http.StatusOK, errcode.Resp(errcode.NoToken))
+		vo.SendFailure(c,constant.NoToken,res)
 		return
 	}
 
 	tokenData, err := redis.Get(util.FormatTokenUserKey(token))
 	if err != nil {
 		if strings.Contains(err.Error(), "redigo: nil returned") {
-			c.AbortWithStatusJSON(http.StatusOK, errcode.Resp(errcode.InvalidToken))
+			vo.SendFailure(c,constant.InvalidToken,res)
 		} else {
-			c.AbortWithStatusJSON(http.StatusOK, errcode.Resp(errcode.InternalError))
+			vo.SendFailure(c,constant.InternalError,res)
 		}
 		return
 	}
@@ -41,12 +42,12 @@ func Authorize(c *gin.Context) {
 	ut := util.UserToken{}
 	err = json.Unmarshal(tokenData, &ut)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusOK, errcode.Resp(errcode.InvalidToken))
+		vo.SendFailure(c,constant.InvalidToken,res)
 		return
 	}
 
 	if ut.UID == 0 || ut.ExpireTime < time.Now().Unix() {
-		c.AbortWithStatusJSON(http.StatusOK, errcode.Resp(errcode.TokenExpired))
+		vo.SendFailure(c,constant.TokenExpired,res)
 		return
 	}
 
@@ -58,20 +59,31 @@ func Authorize(c *gin.Context) {
 
 //  用户登录
 func SignIn(c *gin.Context) {
+	res := vo.GetDefaultResult()
 	var param params.SigninReq
 	err := c.ShouldBind(&param)
 	if err != nil {
-		c.JSON(http.StatusOK, errcode.Resp(errcode.InvalidParams, err.Error()))
+		vo.SendFailure(c,constant.InvalidParams,res)
 		return
 	}
-	rsp, ae := svc.SignIn(&param)
-	c.JSON(http.StatusOK, errcode.Resp(ae, rsp))
+	rsp, err := svc.SignIn(&param)
+	if err !=nil {
+		vo.SendFailure(c,constant.InternalError,res)
+		return
+	}
+	res.Data= rsp
+	vo.SendSuccess(c,res)
 }
 
 //登出
 func SignOut(c *gin.Context) {
-	ae := svc.SignOut(getToken(c))
-	c.JSON(http.StatusOK, errcode.Resp(ae))
+	res := vo.GetDefaultResult()
+	err := svc.SignOut(getToken(c))
+	if err != nil {
+		vo.SendFailure(c,constant.InternalError,res)
+		return
+	}
+	vo.SendSuccess(c,res)
 }
 
 func getToken(c *gin.Context) string {

@@ -34,7 +34,7 @@ func MongoInit() error {
 	var url = "mongodb://" + config.Mongodb.User + ":" + config.Mongodb.Password + "@" + config.Mongodb.Host + ":" + config.Mongodb.Port + "/admin"
 	session, err := mgo.Dial(url)
 	if err != nil {
-		log.GetLogger().Info("db init fail!", err)
+		log.Info("db init fail!", err)
 		return err
 	}
 	session.SetMode(mgo.Strong, false)
@@ -42,7 +42,7 @@ func MongoInit() error {
 	session.SetPoolLimit(config.Mongodb.Poolsize)
 	s = session
 	defaultDb = config.Mongodb.Dbname
-	log.GetLogger().Info("db init success!")
+	log.Info("db init success!")
 	return nil
 }
 

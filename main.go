@@ -107,8 +107,5 @@ func InitRedis() error {
 	idleTimeout := config.Redis.Idle_timeout
 
 	err := redis.Init(host, auth, rdb, maxActive, maxIdle, idleTimeout)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
