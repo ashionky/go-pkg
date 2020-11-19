@@ -1,18 +1,14 @@
 package router
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"go-pkg/handler"
-	"go-pkg/pkg/cfg"
 	"go-pkg/pkg/middleware"
 )
 
-var config  = cfg.GetConfig()
-
-func InitRouter() error {
+func InitRouter() *gin.Engine {
 	r := gin.Default()
 
 	// swagger文档
@@ -38,9 +34,6 @@ func InitRouter() error {
 		pri.POST("/signout", handler.SignOut)
 	}
 
-	if err := r.Run(fmt.Sprintf(":%s", config.Server.Http_port)); err != nil {
-		fmt.Print("运行失败：",err )
-		return err
-	}
-	return nil
+
+	return r
 }

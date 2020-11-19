@@ -6,6 +6,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -16,7 +17,11 @@ import (
 	"go-pkg/pkg/mongodb"
 	"go-pkg/pkg/redis"
 	"go-pkg/router"
+	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
+	"time"
 )
 
 
@@ -70,18 +75,30 @@ func main()  {
 	}
 
     //初始化路由组
-	err = router.InitRouter()
-	if err != nil {
-		fmt.Printf("服务器启动失败: %s\n", err.Error())
-		log.Info("服务器启动失败", err.Error())
-		os.Exit(5)
+	r := router.InitRouter()
+	// 服务优雅退出
+	srv := http.Server{
+		Addr:    ":" + config.Server.Http_port,
+		Handler: r,
 	}
+	log.Info("ListenAndServe port: %s", config.Server.Http_port)
+	go func() {
+		if err := srv.ListenAndServe(); err != nil {
+			log.Error("listen: %s\n", err)
+		}
+	}()
 
-	fmt.Println("程序已启动")
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+	<-quit
+	log.Info("Shutdown Server ...")
 
-	// 阻塞
-	select {}
-
+	// 等待中断信号以优雅地关闭服务器（设置 5 秒的超时时间）
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := srv.Shutdown(ctx); err != nil {
+		log.Error("Server Shutdown: %s\n", err)
+	}
 }
 
 // 连接数据库
