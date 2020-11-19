@@ -3,13 +3,12 @@ package mongodb
 import (
 	"errors"
 	"fmt"
-	"go-pkg/pkg/log"
+	"github.com/globalsign/mgo"
+	"github.com/globalsign/mgo/bson"
 	"go-pkg/pkg/cfg"
 	"io"
 	"mime/multipart"
 	"reflect"
-	"github.com/globalsign/mgo"
-	"github.com/globalsign/mgo/bson"
 )
 
 type B bson.M
@@ -31,10 +30,11 @@ func getSession() *mgo.Session {
 
 
 func MongoInit() error {
+	//fmt.Print("mongo:",config.Mongodb)
 	var url = "mongodb://" + config.Mongodb.User + ":" + config.Mongodb.Password + "@" + config.Mongodb.Host + ":" + config.Mongodb.Port + "/admin"
 	session, err := mgo.Dial(url)
 	if err != nil {
-		log.Info("db init fail!", err)
+		fmt.Printf("mongodb init fail!")
 		return err
 	}
 	session.SetMode(mgo.Strong, false)
@@ -42,7 +42,7 @@ func MongoInit() error {
 	session.SetPoolLimit(config.Mongodb.Poolsize)
 	s = session
 	defaultDb = config.Mongodb.Dbname
-	log.Info("db init success!")
+	fmt.Println("mongodb init success!")
 	return nil
 }
 

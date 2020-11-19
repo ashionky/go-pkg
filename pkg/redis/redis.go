@@ -1,6 +1,7 @@
 package redis
 
 import (
+	"fmt"
 	"github.com/gomodule/redigo/redis"
 	"time"
 )
@@ -48,6 +49,7 @@ func NewRedis(host, auth string, db, maxActive, maxIdle, idleTimeout int) (*Redi
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("redis init success")
 	return &Redis{redisConn: redisConn}, nil
 }
 

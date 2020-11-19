@@ -12,6 +12,7 @@ import (
 	"go-pkg/pkg/cfg"
 	"go-pkg/pkg/db"
 	"go-pkg/pkg/log"
+	"go-pkg/pkg/mongodb"
 	"go-pkg/pkg/redis"
 	"go-pkg/router"
 	"os"
@@ -44,28 +45,28 @@ func main()  {
 	log.InitLog()
 
     //初始化数据库连接
-	//err = InitDB()
-	//if err != nil {
-	//	fmt.Printf("数据库初始化失败: %s\n", err.Error())
-	//	log.Info("数据库初始化失败", err.Error())
-	//	os.Exit(2)
-	//}
+	err = InitDB()
+	if err != nil {
+		fmt.Printf("数据库初始化失败: %s\n", err.Error())
+		log.Info("数据库初始化失败", err.Error())
+		os.Exit(2)
+	}
 
 	//mongo初始化
-	//err =mongodb.MongoInit()
-	//if err != nil {
-	//	fmt.Printf("mongodb初始化失败: %s\n", err.Error())
-	//	logs.Info("mongodb初始化失败", err.Error())
-	//	os.Exit(3)
-	//}
+	err =mongodb.MongoInit()
+	if err != nil {
+		fmt.Printf("mongodb初始化失败: %s\n", err.Error())
+		log.Info("mongodb初始化失败", err.Error())
+		os.Exit(3)
+	}
 
     //初始化redis
-	//err = InitRedis()
-	//if err != nil {
-	//	fmt.Printf("redis初始化失败: %s\n", err.Error())
-	//	log.Info("redis初始化失败", err.Error())
-	//	os.Exit(4)
-	//}
+	err = InitRedis()
+	if err != nil {
+		fmt.Printf("redis初始化失败: %s\n", err.Error())
+		log.Info("redis初始化失败", err.Error())
+		os.Exit(4)
+	}
 
     //初始化路由组
 	err = router.InitRouter()
@@ -75,7 +76,7 @@ func main()  {
 		os.Exit(5)
 	}
 
-	log.Info("程序已启动")
+	fmt.Println("程序已启动")
 
 	// 阻塞
 	select {}

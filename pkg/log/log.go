@@ -16,7 +16,7 @@ var (
 	F *os.File
 
 	DefaultPrefix      = ""
-	DefaultCallerDepth = 2
+	DefaultCallerDepth = 3
 
 	logger     *log.Logger
 	logPrefix  = ""
@@ -40,6 +40,7 @@ func InitLog() {
 	if err != nil {
 		log.Fatalf("InitLog err: %v", err)
 	}
+	fmt.Println("log init success")
 
 	logger = log.New(F, DefaultPrefix, log.LstdFlags)
 }

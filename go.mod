@@ -17,11 +17,9 @@ require (
 	github.com/plandem/xlsx v1.0.4
 	github.com/satori/go.uuid v1.2.0
 	github.com/swaggo/gin-swagger v1.3.0
-	go.uber.org/zap v1.16.0
 	golang.org/x/crypto v0.0.0-20201112155050-0c6587e931a9
 	golang.org/x/time v0.0.0-20190308202827-9d24e82272b4 // indirect
 	golang.org/x/tools v0.0.0-20191112195655-aa38f8e97acc // indirect
-	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	gorm.io/driver/mysql v1.0.3
 	gorm.io/driver/postgres v1.0.5
 	gorm.io/driver/sqlite v1.1.3

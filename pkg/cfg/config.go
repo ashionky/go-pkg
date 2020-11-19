@@ -37,7 +37,7 @@ type Config struct {
 
 	Redis struct {
 		Host      string   `default:"127.0.0.1:6379"`
-		Password  string   `default:"root"`
+		Password  string   `default:""`
 		Db         int     `default:"0"`    //库
 		Max_active int     `default:"30"`   //最大连接数
 		Max_idle   int     `default:"30"`   //最大空闲数

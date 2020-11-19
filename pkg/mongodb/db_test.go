@@ -16,12 +16,12 @@ func TestMongoInit(t *testing.T) {
 	_ = cfg.Initcfg(configFile)
 	MongoInit()
     mp:=map[string]interface{}{
-    	"name":"test",
+    	"name":"lisi",
     	"age":10,
 	}
-	Insert("test_mo",mp)
+	DbInsert("test","user",mp)
     map1:=make(map[string]interface{})
-    FindOne("test_mo",B{},&map1)
+    DbFindOne("test","user",B{},&map1)
     fmt.Print(map1)
 
 }

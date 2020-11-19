@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
@@ -19,6 +20,7 @@ func InitDefaultDB(source, driver string, cfg *gorm.Config) (db *gorm.DB, err er
 		return nil, err
 	}
 	defaultDB = db
+	fmt.Println("db init success")
 	return defaultDB, nil
 }
 
