@@ -29,6 +29,6 @@ func TestPost(t *testing.T) {
 		fmt.Printf("eth_getBlockTransactionCountByNumber err:%v",err)
 		return
 	}
-	fmt.Printf(string(data))
+	fmt.Println(string(data))
 
 }

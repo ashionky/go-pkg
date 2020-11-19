@@ -34,7 +34,7 @@ func MongoInit() error {
 	var url = "mongodb://" + config.Mongodb.User + ":" + config.Mongodb.Password + "@" + config.Mongodb.Host + ":" + config.Mongodb.Port + "/admin"
 	session, err := mgo.Dial(url)
 	if err != nil {
-		fmt.Printf("mongodb init fail!")
+		fmt.Println("mongodb init fail!")
 		return err
 	}
 	session.SetMode(mgo.Strong, false)

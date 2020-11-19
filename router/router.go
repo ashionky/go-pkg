@@ -6,10 +6,14 @@ import (
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"go-pkg/handler"
 	"go-pkg/pkg/middleware"
+	"go-pkg/pkg/websocket"
 )
 
 func InitRouter() *gin.Engine {
 	r := gin.Default()
+
+	//websocket链接请求
+	r.GET("/ws", websocket.WS)
 
 	// swagger文档
 	url := ginSwagger.URL("/swagger/doc.json")
@@ -25,7 +29,6 @@ func InitRouter() *gin.Engine {
 	{
 		// 不需要登录即可访问的api
 		pub.POST("/signin", handler.SignIn)
-
 	}
 
 	pri := v1.Group("/pri", handler.Authorize)
