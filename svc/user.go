@@ -19,7 +19,9 @@ import (
 // 用户登陆
 func SignIn(param *params.SigninReq) (rsp *params.SigninRsp, err error) {
 	var user model.User
-	err = db.GetDB().Model(&model.User{}).Where(nil).First(&user).Error
+	err =db.GetDB().Table(model.User{}.TableName()).
+		Where("phone=? and password=?",param.Phone,param.Password).
+	    First(&user).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return nil, err
@@ -57,8 +59,6 @@ func SignIn(param *params.SigninReq) (rsp *params.SigninRsp, err error) {
 	// 记录uid和token的互相关联关系
 	redis.Set(util.FormatUserTokenKey(rsp.UID), rsp.Token)
 	redis.Set(util.FormatTokenUserKey(rsp.Token), tokenData)
-
-	// todo 把用户信息写到缓存，可提高访问效率
 
 	return rsp, nil
 }

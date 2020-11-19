@@ -19,3 +19,8 @@ type User struct {
 	// 用户状态，1为正常，2为禁用
 	State uint `json:"state"`
 }
+
+//自定义表名
+func (User) TableName() string {
+	return "t_user"
+}

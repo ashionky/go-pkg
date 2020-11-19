@@ -9,6 +9,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"go-pkg/model"
 	"go-pkg/pkg/cfg"
 	"go-pkg/pkg/db"
 	"go-pkg/pkg/log"
@@ -95,6 +96,8 @@ func InitDB() (err error) {
 	sqlconnStr := fmt.Sprintf("%v:%v@(%v)/%v?charset=%v&parseTime=True&loc=Local",
 		user, password, host, dbname, charset)
 	_, err = db.InitDefaultDB(sqlconnStr, driver, nil)
+	//自动创建表结构
+	model.InitTables()
 	return err
 }
 
