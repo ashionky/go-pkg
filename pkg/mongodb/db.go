@@ -430,7 +430,7 @@ func ExportExcel(out multipart.File, data map[string]interface{}) error {
 	session := getSession()
 	defer session.Close()
 
-	file, err := session.DB("wp_file").GridFS("fs").Create(fileName)
+	file, err := session.DB("db_file").GridFS("fs").Create(fileName)
 
 	defer file.Close()
 	defer out.Close()
@@ -466,7 +466,7 @@ func RemoveFile(id interface{}) bool {
 	session := getSession()
 	defer session.Close()
 
-	err := session.DB("lightning_file").GridFS("fs").RemoveId(id)
+	err := session.DB("db_file").GridFS("fs").RemoveId(id)
 	if err != nil {
 		return false
 	} else {

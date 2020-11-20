@@ -81,23 +81,22 @@ func main()  {
 		Addr:    ":" + config.Server.Http_port,
 		Handler: r,
 	}
-	log.Info("ListenAndServe port: %s", config.Server.Http_port)
+	log.Info("ListenAndServe port:", config.Server.Http_port)
 	go func() {
 		if err := srv.ListenAndServe(); err != nil {
-			log.Error("listen: %s\n", err)
+			log.Error("listen:", err.Error())
 		}
 	}()
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 	<-quit
-	log.Info("Shutdown Server ...")
 
 	// 等待中断信号以优雅地关闭服务器（设置 5 秒的超时时间）
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	if err := srv.Shutdown(ctx); err != nil {
-		log.Error("Server Shutdown: %s\n", err)
+		log.Error("Server Shutdown:", err.Error())
 	}
 }
 
