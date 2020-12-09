@@ -11,6 +11,9 @@ export GOPROXY="https://goproxy.cn,direct"
 go mod tidy 
 go mod vendor
 
+修改配置
+conf/dev.yml
+
 打包:
 go build 
 
