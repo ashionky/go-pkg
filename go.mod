@@ -10,13 +10,17 @@ require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8
 	github.com/gomodule/redigo v1.8.2
+	github.com/google/uuid v1.1.2
 	github.com/gorilla/websocket v1.4.2
+	github.com/hashicorp/go-uuid v1.0.2
 	github.com/ivpusic/grpool v1.0.0
 	github.com/jinzhu/configor v1.2.0
 	github.com/olivere/elastic v6.2.35+incompatible
 	github.com/pkg/errors v0.8.1
 	github.com/plandem/xlsx v1.0.4
 	github.com/satori/go.uuid v1.2.0
+	github.com/shamsher31/goimgext v1.0.0 // indirect
+	github.com/shamsher31/goimgtype v1.0.0
 	github.com/swaggo/gin-swagger v1.3.0
 	github.com/unknwon/com v1.0.1
 	golang.org/x/crypto v0.0.0-20201112155050-0c6587e931a9

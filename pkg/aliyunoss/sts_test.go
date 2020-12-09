@@ -6,12 +6,15 @@
 package aliyunoss
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"os"
 	"testing"
 )
 
+
+//后台直接上传
 func TestGoApiTemplate(t *testing.T) {
 	region := "oss-cn-beijing.aliyuncs.com"
 	accessKeyId := ""
@@ -43,4 +46,28 @@ func TestGoApiTemplate(t *testing.T) {
 	}
 
 
+}
+
+//前端上传，到后端获取临时token信息
+func TestGetToken(t *testing.T)  {
+	client :=NewStsClient("","","")  //配置中取值
+	url, err := client.GenerateSignatureUrl("test", "")
+	if err != nil {
+		fmt.Print("GenerateSignatureUrl err")
+		return
+	}
+
+	data, err := client.GetStsResponse(url)
+	if err != nil {
+		fmt.Print("GetStsResponse err")
+		return
+	}
+
+	ali := aliOssMsg{}
+	err = json.Unmarshal(data, &ali)
+	if err != nil {
+		fmt.Print("Unmarshal err")
+		return
+	}
+	fmt.Print("token认证信息：",ali.Credentials)
 }

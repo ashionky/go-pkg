@@ -20,6 +20,28 @@ type AliyunStsClient struct {
 	RoleAcs            string
 }
 
+//认证信息
+type credentials struct {
+	AccessKeyId     string `json:"accessKeyId"`
+	AccessKeySecret string `json:"accessKeySecret"`
+	SecurityToken   string `json:"securityToken"`
+	Expiration      string `json:"expiration"`
+}
+type assumedRoleUser struct {
+	AssumedRoleId string `json:"assumedRoleId"`
+	Arn           string `json:"arn"`
+}
+//获取临时token时候，阿里返回的数据结构体 ali := aliOssMsg{}
+type aliOssMsg struct {
+	RequestId       string          `json:"requestId"`
+	AssumedRoleUser assumedRoleUser `json:"assumedRoleUser"`
+	Credentials     credentials     `json:"credentials"`
+	HostId          string          `json:"hostId"`
+	Code            string          `json:"code"`
+	Message         string          `json:"message"`
+}
+
+
 
 func NewStsClient(oss_key,oss_secret,oss_role_acs string) *AliyunStsClient {
 	return &AliyunStsClient{
@@ -80,7 +102,6 @@ func (cli *AliyunStsClient) GenerateSignatureUrl(sessionName, durationSeconds st
 }
 
 // 请求构造好的URL,获得授权信息
-// TODO: 安全认证 HTTPS
 func (cli *AliyunStsClient) GetStsResponse(url string) ([]byte, error) {
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},

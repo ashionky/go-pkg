@@ -43,7 +43,15 @@ func WS(c *gin.Context) {
 		return
 	}
 	// 检验http头中upgrader属性，若为websocket，则将http协议升级为websocket协议
-	//conn, err := (&websocket.Upgrader{}).Upgrade(c.Writer, c.Request, nil)
+	//upGrader := websocket.Upgrader{
+	//	// cross origin domain
+	//	CheckOrigin: func(r *http.Request) bool {
+	//		return true
+	//	},
+	//	// 处理 Sec-WebSocket-Protocol Header
+	//	Subprotocols: []string{c.GetHeader("Sec-WebSocket-Protocol")},
+	//}
+	//conn, err := upGrader.Upgrade(c.Writer, c.Request, nil)
 	conn, err := websocket.Upgrade(c.Writer, c.Request, nil, 1024, 1024)
 	if _, ok := err.(websocket.HandshakeError); ok {
 		http.Error(c.Writer, "Not a websocket handshake", 400)

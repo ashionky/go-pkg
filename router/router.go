@@ -15,6 +15,9 @@ func InitRouter() *gin.Engine {
 	//websocket链接请求
 	r.GET("/ws", websocket.WS)
 
+	//静态文件
+	r.Static("/static", "static")
+
 	// swagger文档
 	url := ginSwagger.URL("/swagger/doc.json")
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
@@ -29,6 +32,9 @@ func InitRouter() *gin.Engine {
 	{
 		// 不需要登录即可访问的api
 		pub.POST("/signin", handler.SignIn)
+		//文件上传
+		pub.POST("/uploadfile", handler.UploadFile)
+
 	}
 
 	pri := v1.Group("/pri", handler.Authorize)

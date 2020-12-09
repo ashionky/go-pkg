@@ -11,6 +11,11 @@ import (
 	"testing"
 )
 
+type user struct {
+	Name string `json:"name"`
+	Address string  `json:"address"`
+}
+
 func TestInit(t *testing.T) {
 	var configFile  ="../../conf/dev.yml"
 	_ = cfg.Initcfg(configFile)
@@ -24,7 +29,10 @@ func TestInit(t *testing.T) {
 	idleTimeout := config.Redis.Idle_timeout
 	_ = Init(host, auth, rdb, maxActive, maxIdle, idleTimeout)
 
-	defaultRedis.Set("test","88888")
-	b,_:=defaultRedis.Get("test")
+	defaultRedis.Set("user","info")
+	b,err:=defaultRedis.Get("user")
+	//var mp2  user
+	//json.Unmarshal(b,&mp2)
+	fmt.Println(err)
 	fmt.Print(string(b))
 }
