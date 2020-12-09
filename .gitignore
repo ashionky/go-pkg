@@ -4,5 +4,4 @@ go-pkg
 logs/*.log
 vendor/
 test/
-!/static/files/README.md
-/static/files/
+
