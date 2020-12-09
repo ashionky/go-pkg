@@ -1,4 +1,23 @@
 go-pkg
+### 使用说明
+```
+克隆代码
+git clone https://github.com/ashion89/go-pkg.git
+
+本地配置代理
+export GOPROXY="https://goproxy.cn,direct"
+
+依赖下载
+go mod tidy 
+go mod vendor
+
+打包:
+go build 
+
+启动:
+./go-pkg
+
+```
 
 ##整理各类工具方法,方便搭建基础框架
 ```json
