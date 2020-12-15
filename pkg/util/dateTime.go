@@ -407,3 +407,17 @@ func LocalToUtc(localTime string) string {
 
 	return newTime.UTC().Format("2006-01-02T15:04:05Z")
 }
+
+//比较时间大小 true表示time2>time1
+func CompareTimeString(time1,time2 string) bool {
+
+
+	//先把时间字符串格式化成相同的时间类型
+	t1, err := time.Parse("2006-01-02 15:04:05", time1)
+	t2, err := time.Parse("2006-01-02 15:04:05", time2)
+	if err == nil && t1.Before(t2) {
+		//处理逻辑
+		return true
+	}
+	return false
+}

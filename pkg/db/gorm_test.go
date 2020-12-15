@@ -38,7 +38,13 @@ func TestInitDefaultDB(t *testing.T) {
 	_, _ = InitDefaultDB(sqlconnStr, driver, nil)
 	defaultDB.AutoMigrate(Test{})
 	tt:=Test{
-		Name:  "ttt",
+		Name:  "3323231d",
 	}
 	defaultDB.Table("test_b").Save(&tt)
+	list:=[]Test{}
+	defaultDB.Table("test_b").Find(&list)
+
+	fmt.Print("id===",list)
+
+
 }
