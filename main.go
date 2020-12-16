@@ -59,7 +59,7 @@ func main()  {
 	}
 
 	//mongo初始化
-	err =mongodb.MongoInit()
+	err =InitMongodb()
 	if err != nil {
 		fmt.Printf("mongodb初始化失败: %s\n", err.Error())
 		log.Info("mongodb初始化失败", err.Error())
@@ -127,5 +127,12 @@ func InitRedis() error {
 	idleTimeout := config.Redis.Idle_timeout
 
 	err := redis.Init(host, auth, rdb, maxActive, maxIdle, idleTimeout)
+	return err
+}
+
+//mongodb连接
+func InitMongodb() error {
+	var url = "mongodb://" + config.Mongodb.User + ":" + config.Mongodb.Password + "@" + config.Mongodb.Host + ":" + config.Mongodb.Port + "/admin"
+	err :=mongodb.MongoInit(url,config.Mongodb.Dbname,config.Mongodb.Poolsize)
 	return err
 }

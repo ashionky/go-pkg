@@ -14,7 +14,9 @@ import (
 func TestMongoInit(t *testing.T) {
 	var configFile  ="../../conf/dev.yml"
 	_ = cfg.Initcfg(configFile)
-	MongoInit()
+	config:=cfg.GetConfig()
+	var url = "mongodb://" + config.Mongodb.User + ":" + config.Mongodb.Password + "@" + config.Mongodb.Host + ":" + config.Mongodb.Port + "/admin"
+	MongoInit(url,config.Mongodb.Dbname,config.Mongodb.Poolsize)
     mp:=map[string]interface{}{
     	"name":"lisi",
     	"age":10,

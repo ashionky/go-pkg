@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
-	"go-pkg/pkg/cfg"
 	"io"
 	"mime/multipart"
 	"reflect"
@@ -16,22 +15,20 @@ type Regex bson.RegEx
 
 var s *mgo.Session
 var defaultDb string
-var config =cfg.GetConfig()
+
 
 func getSession() *mgo.Session {
-	if s == nil {
-		err := MongoInit()
-		if err != nil {
-
-		}
-	}
+	//if s == nil {
+	//	err := MongoInit()
+	//	if err != nil {
+	//
+	//	}
+	//}
 	return s.Clone()
 }
 
 
-func MongoInit() error {
-	//fmt.Print("mongo:",config.Mongodb)
-	var url = "mongodb://" + config.Mongodb.User + ":" + config.Mongodb.Password + "@" + config.Mongodb.Host + ":" + config.Mongodb.Port + "/admin"
+func MongoInit(url, dbname string,poolsize int) error {
 	session, err := mgo.Dial(url)
 	if err != nil {
 		fmt.Println("mongodb init fail!")
@@ -39,9 +36,9 @@ func MongoInit() error {
 	}
 	session.SetMode(mgo.Strong, false)
 
-	session.SetPoolLimit(config.Mongodb.Poolsize)
+	session.SetPoolLimit(poolsize)
 	s = session
-	defaultDb = config.Mongodb.Dbname
+	defaultDb = dbname
 	fmt.Println("mongodb init success!")
 	return nil
 }
