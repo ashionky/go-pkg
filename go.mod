@@ -12,7 +12,6 @@ require (
 	github.com/gomodule/redigo v1.8.2
 	github.com/google/uuid v1.1.2
 	github.com/gorilla/websocket v1.4.2
-	github.com/hashicorp/go-uuid v1.0.2
 	github.com/ivpusic/grpool v1.0.0
 	github.com/jinzhu/configor v1.2.0
 	github.com/olivere/elastic v6.2.35+incompatible
