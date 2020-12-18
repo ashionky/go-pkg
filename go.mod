@@ -14,6 +14,7 @@ require (
 	github.com/gorilla/websocket v1.4.2
 	github.com/ivpusic/grpool v1.0.0
 	github.com/jinzhu/configor v1.2.0
+	github.com/jinzhu/gorm v1.9.16
 	github.com/olivere/elastic v6.2.35+incompatible
 	github.com/pkg/errors v0.8.1
 	github.com/plandem/xlsx v1.0.4
@@ -27,6 +28,6 @@ require (
 	golang.org/x/tools v0.0.0-20191112195655-aa38f8e97acc // indirect
 	gorm.io/driver/mysql v1.0.3
 	gorm.io/driver/postgres v1.0.5
-	gorm.io/driver/sqlite v1.1.3
-	gorm.io/gorm v1.20.6
+	gorm.io/driver/sqlite v1.1.4
+	gorm.io/gorm v1.20.7
 )
