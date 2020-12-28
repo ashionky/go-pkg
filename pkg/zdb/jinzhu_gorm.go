@@ -19,6 +19,7 @@ func InitDefaultDB(source, driver string) (db *gorm.DB, err error) {
 		return nil, err
 	}
 	defaultDB = db
+	defaultDB.LogMode(true)   //打印详细sql日志
 	fmt.Println("db init success")
 	return defaultDB, nil
 }

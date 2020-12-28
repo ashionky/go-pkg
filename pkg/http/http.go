@@ -1,4 +1,4 @@
-package pkg
+package http
 
 import (
 	"bytes"
