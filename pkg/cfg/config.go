@@ -40,9 +40,6 @@ type Config struct {
 		Password  string   `default:""`
 		Db         int     `default:"0"`    //库
 		Max_active int     `default:"30"`   //最大连接数
-		Max_idle   int     `default:"30"`   //最大空闲数
-		Idle_timeout int   `default:"200"`   //空闲超时重连，单位秒
-
 	}
 	Alioss struct {
 	     Oss_key       string

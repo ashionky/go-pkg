@@ -123,10 +123,8 @@ func InitRedis() error {
 	auth := config.Redis.Password
 	rdb := config.Redis.Db
 	maxActive := config.Redis.Max_active
-	maxIdle := config.Redis.Max_idle
-	idleTimeout := config.Redis.Idle_timeout
 
-	err := redis.Init(host, auth, rdb, maxActive, maxIdle, idleTimeout)
+	err := redis.Init(host, auth, rdb, maxActive)
 	return err
 }
 

@@ -10,6 +10,7 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.6.3
 	github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8
+	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/gomodule/redigo v1.8.2
 	github.com/google/uuid v1.1.2
 	github.com/gorilla/websocket v1.4.2
@@ -18,6 +19,8 @@ require (
 	github.com/jinzhu/gorm v1.9.16
 	github.com/mitchellh/mapstructure v1.4.0
 	github.com/olivere/elastic v6.2.35+incompatible
+	github.com/onsi/ginkgo v1.14.2 // indirect
+	github.com/onsi/gomega v1.10.4 // indirect
 	github.com/pkg/errors v0.8.1
 	github.com/plandem/xlsx v1.0.4
 	github.com/satori/go.uuid v1.2.0

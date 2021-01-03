@@ -9,8 +9,8 @@ import (
 var defaultRedis *Redis
 
 // 初始化默认数据库，全局唯一的，用包名访问的方法，都存在此数据库中。
-func Init(host, auth string, db, maxActive, maxIdle, idleTimeout int) error {
-	rdb, err := NewRedis(host, auth, db, maxActive, maxIdle, idleTimeout)
+func Init(host, auth string, db, maxActive int) error {
+	rdb, err := NewRedis(host, auth, db, maxActive)
 	if err != nil {
 		return err
 	}
@@ -24,11 +24,9 @@ func GetDefaultDB() *Redis {
 }
 
 // 新打开一个数据库对象，如果程序中需要同时打开多个数据库，则可以用此方法。
-func NewRedis(host, auth string, db, maxActive, maxIdle, idleTimeout int) (*Redis, error) {
+func NewRedis(host, auth string, db, maxActive int) (*Redis, error) {
 	redisConn := &redis.Pool{
-		MaxIdle:     maxIdle,
 		MaxActive:   maxActive,
-		IdleTimeout: time.Duration(idleTimeout),
 		Dial: func() (redis.Conn, error) {
 			c, err := redis.Dial("tcp",
 				host,

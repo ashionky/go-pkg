@@ -16,8 +16,6 @@ redis:
   password:
   db: 0
   max_active: 30
-  max_idle: 30
-  idle_timeout: 200
 
 
 mongodb:
