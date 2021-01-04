@@ -1,0 +1,23 @@
+/**
+ * @Author pibing
+ * @create 2021/1/4 10:13 AM
+ */
+syntax = "proto3";
+package protos;
+
+service Test {
+	rpc GetList(Request) returns (Respose) {}
+}
+
+
+message Request{
+	string name =1;
+}
+
+message Respose {
+    repeated List list = 1;
+    message List {
+       string id = 1;
+       string name =2;
+    }
+}

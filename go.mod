@@ -31,6 +31,7 @@ require (
 	golang.org/x/crypto v0.0.0-20201112155050-0c6587e931a9
 	golang.org/x/time v0.0.0-20190308202827-9d24e82272b4 // indirect
 	golang.org/x/tools v0.0.0-20191112195655-aa38f8e97acc // indirect
+	google.golang.org/grpc v1.34.0
 	gorm.io/driver/mysql v1.0.3
 	gorm.io/driver/postgres v1.0.5
 	gorm.io/driver/sqlite v1.1.4
