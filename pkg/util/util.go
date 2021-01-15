@@ -3,6 +3,7 @@ package util
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"hash/crc32"
 	"math/rand"
 	"time"
 )
@@ -45,6 +46,15 @@ func MD5(key string) string {
 	ha.Write([]byte(key))
 
 	return hex.EncodeToString(ha.Sum(nil))
+}
+
+
+func GetHashCode(str string, count int) int {
+	v := crc32.ChecksumIEEE([]byte(str))
+	if v < 0 {
+		v = -v
+	}
+	return int(v) % count
 }
 
 

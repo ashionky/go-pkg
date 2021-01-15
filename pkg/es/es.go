@@ -17,6 +17,7 @@ func Init() error {
 	var url = config.Es.Url
 	var user = config.Es.User
 	var password = config.Es.Password
+	fmt.Println(config.Es)
 	var err error
 	client, err = elastic.NewClient(
 		elastic.SetURL(url),
@@ -24,14 +25,17 @@ func Init() error {
 		elastic.SetSniff(false),
 	)
 	if err != nil {
+		fmt.Println("NewClient err ",err)
 		return err
 	}
 	info, code, err := client.Ping(url).Do(ctx)
 	if err != nil {
+		fmt.Println("Ping err ",err)
 		return err
 	}
+	fmt.Println("code:",code)
 	if code == 200 {
-		fmt.Sprintf("connected to es: %s ,version: %s", info.ClusterName, info.Version.Number)
+		fmt.Printf("connected to es: %s ,version: %s \n", info.ClusterName, info.Version.Number)
 	}
 	return nil
 }
@@ -41,7 +45,8 @@ func getClient() *elastic.Client {
 	if client != nil {
 		return client
 	} else {
-		Init()
+		err := Init()
+		fmt.Println("init err ",err)
 		return client
 	}
 }

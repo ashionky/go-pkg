@@ -32,6 +32,10 @@ alioss:
   oss_secret: qqq
   oss_role_acs: qqq
   oss_bucket:  qqq
+es:
+  url : http://127.0.0.1:32776
+  user :
+  password :
 
 
 
