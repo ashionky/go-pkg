@@ -1,6 +1,4 @@
 /**
- * @author:LiuPf
- * @date: 2019-05-05
  * @description: 统一参数校验
  */
 package validators
