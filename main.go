@@ -13,6 +13,7 @@ import (
 	"go-pkg/model"
 	"go-pkg/pkg/cfg"
 	"go-pkg/pkg/db"
+	"go-pkg/pkg/kafka"
 	"go-pkg/pkg/log"
 	"go-pkg/pkg/mongodb"
 	"go-pkg/pkg/redis"
@@ -20,6 +21,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"sync"
 	"syscall"
 	"time"
 )
@@ -76,6 +78,13 @@ func main()  {
 
     //初始化路由组
 	r := router.InitRouter()
+
+	// kafka的上下文
+	kafka.Init()
+	ctx1, cancel1 := context.WithCancel(context.Background())
+	wg := &sync.WaitGroup{}
+	kafka.InitHandler(ctx1, wg)
+
 	// 服务优雅退出
 	srv := http.Server{
 		Addr:    ":" + config.Server.Http_port,
@@ -98,6 +107,7 @@ func main()  {
 	if err := srv.Shutdown(ctx); err != nil {
 		log.Error("Server Shutdown:", err.Error())
 	}
+	cancel1()
 }
 
 // 连接数据库

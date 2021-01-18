@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"strconv"
 	"time"
+	"go-pkg/pkg/util"
 )
 
 const OSS_TTL  =3600*4   //设置默认有效时间   此时间只能在角色最大会话时间范围内
@@ -64,7 +65,7 @@ func (cli *AliyunStsClient) GenerateSignatureUrl(sessionName, durationSeconds st
 	assumeUrl += "&SignatureMethod=HMAC-SHA1"
 	assumeUrl += "&Version=2015-04-01"
 	assumeUrl += "&Action=AssumeRole"
-	assumeUrl += "&SignatureNonce=" + UUID()
+	assumeUrl += "&SignatureNonce=" + util.UUID()
 
 	//if durationSeconds == "" || durationSeconds == "0" {
 	//	durationSeconds = OSS_TTL

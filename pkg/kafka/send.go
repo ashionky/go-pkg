@@ -2,16 +2,15 @@ package kafka
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Shopify/sarama"
 	"github.com/pkg/errors"
-	"go-pkg/pkg/log"
 	"go-pkg/pkg/cfg"
 	"math"
 	"strings"
 	"time"
 )
 
-//var job *grpool.Pool
 
 //最大批量推送消息数量
 const maxBatchNum int = 500
@@ -19,7 +18,6 @@ const maxBatchNum int = 500
 var kfkConfig *sarama.Config
 var kfkOrderConfig *sarama.Config
 var Addresses []string
-var groupID string
 var config  = cfg.GetConfig()
 
 func getKafkaConfig() *sarama.Config {
@@ -44,12 +42,11 @@ func getKafkOrderConfig() *sarama.Config {
 }
 
 func Init() {
-	//groupID = ""
 	ips := config.Kafka.Url
 	for _, ip := range strings.Split(ips, ",") {
 		Addresses = append(Addresses, ip)
 	}
-	log.Info("kafka brokers=====", ips)
+	fmt.Println("kafka brokers=====", ips)
 }
 
 /**
@@ -73,13 +70,13 @@ func SendEvent(eventData *ReportEvent) error {
 	}
 	jsonData, err := json.Marshal(eventData)
 	if err != nil {
-		log.Info("json marshal err: %+v %v", eventData, err)
+		fmt.Printf("json marshal err: %+v %v", eventData, err)
 		return err
 	}
 
 	p, err := sarama.NewSyncProducer(Addresses, getKafkaConfig())
 	if err != nil {
-		log.Info("sarama.NewSyncProducer err, message=%s", err)
+		fmt.Printf("sarama.NewSyncProducer err, message=%s", err)
 		go recordFailEvent(eventData)
 		return err
 	}
@@ -91,11 +88,11 @@ func SendEvent(eventData *ReportEvent) error {
 	}
 	part, offset, err := p.SendMessage(msg)
 	if err != nil {
-		log.Info("publish event err: %v", err)
+		fmt.Printf("publish event err: %v", err)
 		go recordFailEvent(eventData)
 		return err
 	} else {
-		log.Info(string(jsonData)+"send message success，partition=%d, offset=%d \n", part, offset)
+		fmt.Printf(string(jsonData)+"send message success，partition=%d, offset=%d \n", part, offset)
 	}
 	return nil
 }
@@ -121,13 +118,13 @@ func SendOrderEvent(eventData *ReportEvent) error {
 	}
 	jsonData, err := json.Marshal(eventData)
 	if err != nil {
-		log.Info("json marshal err: %+v %v", eventData, err)
+		fmt.Printf("json marshal err: %+v %v", eventData, err)
 		return err
 	}
 
 	p, err := sarama.NewSyncProducer(Addresses, getKafkOrderConfig())
 	if err != nil {
-		log.Info("sarama.NewSyncProducer err, message=%s", err)
+		fmt.Printf("sarama.NewSyncProducer err, message=%s", err)
 		go recordFailEvent(eventData)
 		return err
 	}
@@ -136,15 +133,15 @@ func SendOrderEvent(eventData *ReportEvent) error {
 	msg := &sarama.ProducerMessage{
 		Topic: eventData.Topic,
 		Value: sarama.ByteEncoder(jsonData),
-		Key:   sarama.ByteEncoder(eventData.Account), //根据账号Id路由分区
+		Key:   sarama.ByteEncoder(eventData.Account), //根据account路由分区
 	}
 	part, offset, err := p.SendMessage(msg)
 	if err != nil {
-		log.Info("publish event err: %v", err)
+		fmt.Printf("publish event err: %v", err)
 		go recordFailEvent(eventData)
 		return err
 	} else {
-		log.Info("msgId:"+eventData.Id+",send message success，partition=%d, offset=%d \n", part, offset)
+		fmt.Printf("msgId:"+eventData.Id+",send message success，partition=%d, offset=%d \n", part, offset)
 	}
 	return nil
 }
@@ -223,7 +220,7 @@ func publishMultiEvent(sendTopic string, eventList []ReportEvent, isOrder bool) 
 	}
 	p, err := sarama.NewSyncProducer(Addresses, kafakcfg)
 	if err != nil {
-		log.Info("sarama.NewSyncProducer err, message=%s \n", err)
+		fmt.Printf("sarama.NewSyncProducer err, message=%s \n", err)
 		return err
 	}
 	defer p.Close()
@@ -238,13 +235,12 @@ func publishMultiEvent(sendTopic string, eventList []ReportEvent, isOrder bool) 
 
 		jsonData, err := json.Marshal(eventData)
 		if err != nil {
-			log.Info("json marshal err: %+v %v", eventData, err)
+			fmt.Printf("json marshal err: %+v %v", eventData, err)
 			return nil
 		}
 		msg := &sarama.ProducerMessage{
 			Topic: sendTopic,
 			Value: sarama.ByteEncoder(jsonData),
-			//Partition: 1,
 		}
 		if isOrder {
 			msg.Key = sarama.ByteEncoder(eventData.Account)
@@ -254,7 +250,7 @@ func publishMultiEvent(sendTopic string, eventList []ReportEvent, isOrder bool) 
 
 	err = p.SendMessages(msgs)
 	if err != nil {
-		log.Info("publish event err: %v", err)
+		fmt.Printf("publish event err: %v", err)
 		return err
 	}
 	return nil
@@ -302,7 +298,7 @@ func recordBatchFailEvent(eventList []ReportEvent) {
 }
 
 //发送失败时，获取下次通知时间
-//在通知一直不成功的情况下，总共会发起15次通知，通知频率为15s/15s/30s/3m/10m/20m/30m/30m/30m/60m/3h/3h/3h/6h/6h - 总计 24h4m
+//在通知一直不成功的情况下，总共发起15次通知，通知频率为15s/15s/30s/3m/10m/20m/30m/30m/30m/60m/3h/3h/3h/6h/6h - 总计 24h4m
 
 func GetRetryTime(num int32) string {
 	var retryTime string

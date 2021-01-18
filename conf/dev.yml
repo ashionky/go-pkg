@@ -17,7 +17,6 @@ redis:
   db: 0
   max_active: 30
 
-
 mongodb:
   host: 127.0.0.1
   port: 27017
@@ -26,16 +25,20 @@ mongodb:
   dbname: test
   poolsize: 10
 
-
 alioss:
   oss_key: qqq
   oss_secret: qqq
   oss_role_acs: qqq
   oss_bucket:  qqq
 es:
-  url : http://127.0.0.1:32776
-  user :
-  password :
+  url: http://127.0.0.1:32776
+  user:
+  password:
+
+kafka:
+  url: 127.0.0.1:9092
+  groupid: test
+  topic: test
 
 
 

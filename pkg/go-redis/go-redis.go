@@ -155,6 +155,15 @@ func ExpireAt(key string, ex time.Time) error {
 	return client.ExpireAt(key, ex).Err()
 }
 
+func Hincrby(key string, field string, incr int64) error {
+	return client.HIncrBy(key, field, incr).Err()
+}
+
+func HincrbyWithResult(key string, field string, incr int64) (error, int64) {
+	result := client.HIncrBy(key, field, incr)
+	return result.Err(), result.Val()
+}
+
 /**
  * redis 分布式锁
  * @param  key  {string} 			 初始化锁的互斥标示

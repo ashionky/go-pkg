@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"github.com/Shopify/sarama"
 	"github.com/ivpusic/grpool"
-	"go-pkg/pkg/log"
 )
 
 type TestEventHandler struct {
@@ -14,17 +13,18 @@ type TestEventHandler struct {
 }
 
 func (handler TestEventHandler) HandleKafkaMsg(message *ReportEvent) (err error) {
-	if !checkTestRepeatEvent(message.Id) {
+	if  checkTestRepeatEvent(message.Id) {
 		err = errors.New("event msg repeat id: " + message.Id)
 		return err
 	}
 	switch message.Type {
 	case "test":
 	   //todo 处理数据message。。。。
+	   fmt.Println("body==",message.Body)
 
 		CopyTestEvent(message)  //记录已处理的消息
 	default:
-		log.Info("can not process event:" + message.Type)
+		fmt.Println("can not process event:" + message.Type)
 	}
 	return
 }
@@ -36,7 +36,7 @@ func (handler TestEventHandler) ConsumeClaim(sess sarama.ConsumerGroupSession, c
 		eventmsg := ReportEvent{}
 		err := json.Unmarshal(msg.Value, &eventmsg)
 		if err != nil {
-			log.Info("parse kafka message error: %v", err)
+			fmt.Printf("parse kafka message error: %v \n", err)
 		}
 		handler.HandleKafkaMsg(&eventmsg)
 

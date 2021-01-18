@@ -49,7 +49,7 @@ type Config struct {
     }
 	Kafka struct{
 		Url       string
-		Partition int
+		Groupid   string
 		Topic     string
 	}
 	Es struct{

@@ -34,7 +34,7 @@ func NewConsumerHandler(topic string, groupID string, ctx1 context.Context, w *s
 	go func() {
 		defer wg.Done()
 		for {
-			// 为了重试
+			// 重试
 			if err := consumerGroup.Consume(ctx, topics, handler); err != nil {
 				log.Info("Error from consumer: %v", err)
 			}
