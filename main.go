@@ -16,7 +16,7 @@ import (
 	"go-pkg/pkg/kafka"
 	"go-pkg/pkg/log"
 	"go-pkg/pkg/mongodb"
-	"go-pkg/pkg/redis"
+	redis "go-pkg/pkg/go-redis"
 	"go-pkg/router"
 	"net/http"
 	"os"
@@ -134,7 +134,7 @@ func InitRedis() error {
 	rdb := config.Redis.Db
 	maxActive := config.Redis.Max_active
 
-	err := redis.Init(host, auth, rdb, maxActive)
+	err := redis.RedisInit(host, auth, rdb, maxActive)
 	return err
 }
 

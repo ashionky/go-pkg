@@ -11,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"go-pkg/constant"
 	"go-pkg/params"
-	"go-pkg/pkg/redis"
+	redis "go-pkg/pkg/go-redis"
 	"go-pkg/pkg/vo"
 	"go-pkg/svc"
 	"go-pkg/util"
@@ -30,8 +30,9 @@ func Authorize(c *gin.Context) {
 	}
 
 	tokenData, err := redis.Get(util.FormatTokenUserKey(token))
+
 	if err != nil {
-		if strings.Contains(err.Error(), "redigo: nil returned") {
+		if strings.Contains(err.Error(), "redis: nil") {
 			vo.SendFailure(c,constant.InvalidToken,res)
 		} else {
 			vo.SendFailure(c,constant.InternalError,res)
@@ -40,7 +41,7 @@ func Authorize(c *gin.Context) {
 	}
 
 	ut := util.UserToken{}
-	err = json.Unmarshal(tokenData, &ut)
+	err = json.Unmarshal([]byte(tokenData), &ut)
 	if err != nil {
 		vo.SendFailure(c,constant.InvalidToken,res)
 		return

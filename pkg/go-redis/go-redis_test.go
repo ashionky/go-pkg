@@ -27,17 +27,8 @@ func TestMG( t *testing.T)  {
 	_ = RedisInit(host, auth, rdb, maxActive)
 
 
-	HSet("user","age",10)
-	HSet("user","name","ooooo")
-	var mp2  string
-	_=HGet("user","name",&mp2)
-	fmt.Print(mp2)
-	Hdel("user","name")
-
-	//json.Unmarshal([]byte(b),&mp2)
-	err :=HGet("user","name",&mp2)
-	fmt.Println(err)
-	fmt.Print(mp2)
+	Hincrby("key","field2",3)
+	fmt.Println(HincrbyWithResult("key","field2",3))
 
 
 

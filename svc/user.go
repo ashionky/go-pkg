@@ -10,7 +10,7 @@ import (
 	"go-pkg/model"
 	"go-pkg/params"
 	"go-pkg/pkg/db"
-	"go-pkg/pkg/redis"
+	redis "go-pkg/pkg/go-redis"
 	"go-pkg/util"
 	"gorm.io/gorm"
 	"time"
@@ -52,13 +52,13 @@ func SignIn(param *params.SigninReq) (rsp *params.SigninRsp, err error) {
 
 	// 把以前的token干掉
 	oldToken, _ := redis.Get(util.FormatUserTokenKey(rsp.UID))
-	if oldToken != nil {
-		redis.Delete(util.FormatTokenUserKey(string(oldToken)))
+	if oldToken != "" {
+		redis.Del(util.FormatTokenUserKey(string(oldToken)))
 	}
 
 	// 记录uid和token的互相关联关系
 	redis.Set(util.FormatUserTokenKey(rsp.UID), rsp.Token)
-	redis.Set(util.FormatTokenUserKey(rsp.Token), tokenData)
+	redis.Set(util.FormatTokenUserKey(rsp.Token), string(tokenData))
 
 	return rsp, nil
 }
@@ -70,14 +70,14 @@ func SignOut(token string) error {
 	if err != nil {
 		return err
 	}
-	redis.Delete(util.FormatTokenUserKey(token))
+	redis.Del(util.FormatTokenUserKey(token))
 
 	ut := util.UserToken{}
-	err = json.Unmarshal(tokenData, &ut)
+	err = json.Unmarshal([]byte(tokenData), &ut)
 	if err != nil {
 		return err
 	}
-	redis.Delete(util.FormatUserTokenKey(ut.UID))
+	redis.Del(util.FormatUserTokenKey(ut.UID))
 
 	return nil
 }
