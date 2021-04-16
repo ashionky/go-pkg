@@ -10,39 +10,38 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"io/ioutil"
-	"strings"
 	"github.com/google/uuid"
 	imgType "github.com/shamsher31/goimgtype"
+	"io/ioutil"
+	"strings"
 )
 
 //响应结构体
 type FileResponse struct {
-	Size     int64  `json:"size"`           //文件大小
-	Path     string `json:"path"`           //文件相对路径
-	FullPath string `json:"full_path"`      //文件全路径
-	Name     string `json:"name"`           //文件名称
-	Type     string `json:"type"`           //文件类型
+	Size     int64  `json:"size"`      //文件大小
+	Path     string `json:"path"`      //文件相对路径
+	FullPath string `json:"full_path"` //文件全路径
+	Name     string `json:"name"`      //文件名称
+	Type     string `json:"type"`      //文件类型
 }
-
 
 // @Summary 上传文件公用方法--按type区分单个上传/批量上传/base64上传
 // @Param c *gin.Context true
 // return  FileResponse,error
 
-func UploadFile(c *gin.Context)(FileResponse,error) {
+func UploadFile(c *gin.Context) (FileResponse, error) {
 
 	tag, _ := c.GetPostForm("type")
 	urlPerfix := fmt.Sprintf("http://%s/", c.Request.Host)
 	var fileResponse FileResponse
 	if tag == "" {
-		return fileResponse,errors.New("缺少type标识")
+		return fileResponse, errors.New("缺少type标识")
 	} else {
 		switch tag {
 		case "1": // 单图
 			files, err := c.FormFile("file")
 			if err != nil {
-				return fileResponse,errors.New("文件不能为空")
+				return fileResponse, errors.New("文件不能为空")
 			}
 			// 上传文件至指定目录
 			guid := uuid.New().String()
@@ -92,11 +91,9 @@ func UploadFile(c *gin.Context)(FileResponse,error) {
 				Type:     typeStr,
 			}
 		default:
-			return fileResponse,errors.New("type类型错误")
+			return fileResponse, errors.New("type类型错误")
 		}
 
 	}
-	return fileResponse,nil
+	return fileResponse, nil
 }
-
-

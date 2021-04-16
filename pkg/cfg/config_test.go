@@ -11,7 +11,7 @@ import (
 )
 
 func TestInitcfg(t *testing.T) {
-	configFile:="./dev.yml"
+	configFile := "./dev.yml"
 	_ = Initcfg(configFile)
 	fmt.Print(config.Redis.Password)
 }

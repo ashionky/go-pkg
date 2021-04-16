@@ -23,9 +23,9 @@ func (Test) TableName() string {
 }
 
 func TestInitDefaultDB(t *testing.T) {
-	var configFile  ="../../conf/dev.yml"
+	var configFile = "../../conf/dev.yml"
 	_ = cfg.Initcfg(configFile)
-	var config=cfg.GetConfig()
+	var config = cfg.GetConfig()
 	driver := "mysql"
 
 	user := config.Mysql.User
@@ -37,14 +37,13 @@ func TestInitDefaultDB(t *testing.T) {
 		user, password, host, dbname, charset)
 	_, _ = InitDefaultDB(sqlconnStr, driver, nil)
 	defaultDB.AutoMigrate(Test{})
-	tt:=Test{
-		Name:  "3323231d",
+	tt := Test{
+		Name: "3323231d",
 	}
 	defaultDB.Table("test_b").Save(&tt)
-	list:=[]Test{}
+	list := []Test{}
 	defaultDB.Table("test_b").Find(&list)
 
-	fmt.Print("id===",list)
-
+	fmt.Print("id===", list)
 
 }

@@ -8,6 +8,7 @@ package jwt_util
 import (
 	"github.com/dgrijalva/jwt-go"
 )
+
 const SECRET = "pibing"
 
 //把对象生成token
@@ -16,6 +17,7 @@ func MakeToken(obj map[string]interface{}) (string, error) {
 	tokenString, err := token.SignedString([]byte(SECRET))
 	return tokenString, err
 }
+
 //解析token为对象
 func ParseToken(tokenStr string) map[string]interface{} {
 	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (i interface{}, e error) {

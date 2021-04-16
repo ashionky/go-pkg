@@ -25,7 +25,7 @@ func Authorize(c *gin.Context) {
 	token := c.GetHeader("X-Token")
 	if token == "" {
 		// 没有登陆过
-		vo.SendFailure(c,constant.NoToken,res)
+		vo.SendFailure(c, constant.NoToken, res)
 		return
 	}
 
@@ -33,9 +33,9 @@ func Authorize(c *gin.Context) {
 
 	if err != nil {
 		if strings.Contains(err.Error(), "redis: nil") {
-			vo.SendFailure(c,constant.InvalidToken,res)
+			vo.SendFailure(c, constant.InvalidToken, res)
 		} else {
-			vo.SendFailure(c,constant.InternalError,res)
+			vo.SendFailure(c, constant.InternalError, res)
 		}
 		return
 	}
@@ -43,12 +43,12 @@ func Authorize(c *gin.Context) {
 	ut := util.UserToken{}
 	err = json.Unmarshal([]byte(tokenData), &ut)
 	if err != nil {
-		vo.SendFailure(c,constant.InvalidToken,res)
+		vo.SendFailure(c, constant.InvalidToken, res)
 		return
 	}
 
 	if ut.UID == 0 || ut.ExpireTime < time.Now().Unix() {
-		vo.SendFailure(c,constant.TokenExpired,res)
+		vo.SendFailure(c, constant.TokenExpired, res)
 		return
 	}
 
@@ -57,23 +57,22 @@ func Authorize(c *gin.Context) {
 	c.Next()
 }
 
-
 //  用户登录
 func SignIn(c *gin.Context) {
 	res := vo.GetDefaultResult()
 	var param params.SigninReq
 	err := c.ShouldBind(&param)
 	if err != nil {
-		vo.SendFailure(c,constant.InvalidParams,res)
+		vo.SendFailure(c, constant.InvalidParams, res)
 		return
 	}
 	rsp, err := svc.SignIn(&param)
-	if err !=nil {
-		vo.SendFailure(c,constant.InternalError,res)
+	if err != nil {
+		vo.SendFailure(c, constant.InternalError, res)
 		return
 	}
-	res.Data= rsp
-	vo.SendSuccess(c,res)
+	res.Data = rsp
+	vo.SendSuccess(c, res)
 }
 
 //登出
@@ -81,13 +80,12 @@ func SignOut(c *gin.Context) {
 	res := vo.GetDefaultResult()
 	err := svc.SignOut(getToken(c))
 	if err != nil {
-		vo.SendFailure(c,constant.InternalError,res)
+		vo.SendFailure(c, constant.InternalError, res)
 		return
 	}
-	vo.SendSuccess(c,res)
+	vo.SendSuccess(c, res)
 }
 
 func getToken(c *gin.Context) string {
 	return c.Request.Header.Get("X-Token")
 }
-

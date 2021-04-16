@@ -390,7 +390,6 @@ func GetDataSubValue(newData string) (day, hour, minute, second float64) {
 	return
 }
 
-
 func UtcToLocal(utcTime string) string {
 	layout := "2006-01-02T15:04:05Z"
 	utc, _ := time.LoadLocation("UTC")
@@ -398,7 +397,6 @@ func UtcToLocal(utcTime string) string {
 
 	return newTime.Local().Format("2006-01-02 15:04:05")
 }
-
 
 func LocalToUtc(localTime string) string {
 	layout := "2006-01-02 15:04:05"
@@ -409,8 +407,7 @@ func LocalToUtc(localTime string) string {
 }
 
 //比较时间大小 true表示time2>time1
-func CompareTimeString(time1,time2 string) bool {
-
+func CompareTimeString(time1, time2 string) bool {
 
 	//先把时间字符串格式化成相同的时间类型
 	t1, err := time.Parse("2006-01-02 15:04:05", time1)

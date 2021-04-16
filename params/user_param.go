@@ -15,5 +15,3 @@ type SigninRsp struct {
 	// 用户令牌，后续请求都需要在header X-Token带上此token
 	Token string `json:"token" form:"token" binding:"required"`
 }
-
-

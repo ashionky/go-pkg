@@ -20,14 +20,13 @@ var clusterClient *redis.ClusterClient
 
 func RedisInit(host, password string, db, poolsize int) error {
 
-
 	redisOptions := &redis.Options{}
 	redisOptions.Addr = host
 	if password != "" {
 		redisOptions.Password = password
 	}
 	redisOptions.DB = db
-	if poolsize >0 {
+	if poolsize > 0 {
 		redisOptions.PoolSize = poolsize
 	}
 	client = redis.NewClient(redisOptions)
@@ -40,8 +39,9 @@ func RedisInit(host, password string, db, poolsize int) error {
 
 	return nil
 }
+
 //redis集群
-func RedisInitForCluster(hosts,password string,poolsize int) error {
+func RedisInitForCluster(hosts, password string, poolsize int) error {
 
 	ips := strings.Split(hosts, ",")
 
@@ -53,7 +53,7 @@ func RedisInitForCluster(hosts,password string,poolsize int) error {
 		clusterOptions.Password = password
 	}
 
-	if poolsize > 0{
+	if poolsize > 0 {
 		clusterOptions.PoolSize = poolsize
 	}
 
@@ -67,12 +67,9 @@ func RedisInitForCluster(hosts,password string,poolsize int) error {
 	return nil
 }
 
-
-
 func Hset(key string, field string, value interface{}) error {
 	return client.HSet(key, field, value).Err()
 }
-
 
 func HSet(key, field string, value interface{}) error {
 	btr, err := json.Marshal(value)
@@ -81,7 +78,6 @@ func HSet(key, field string, value interface{}) error {
 	}
 	return client.HSet(key, field, string(btr)).Err()
 }
-
 
 func HMSet(key string, fields map[string]interface{}) error {
 	return client.HMSet(key, fields).Err()
@@ -193,9 +189,9 @@ func UnLock(locker *redislock.Locker) {
 }
 
 // 转换从redis获取的数据
-func ConvertStringToMap(base map[string]string)map[string]interface{}{
+func ConvertStringToMap(base map[string]string) map[string]interface{} {
 	resultMap := make(map[string]interface{})
-	for k,v := range base {
+	for k, v := range base {
 		var dat map[string]interface{}
 		if err := json.Unmarshal([]byte(v), &dat); err == nil {
 			resultMap[k] = dat

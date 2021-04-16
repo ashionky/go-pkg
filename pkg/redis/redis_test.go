@@ -12,14 +12,14 @@ import (
 )
 
 type user struct {
-	Name string `json:"name"`
-	Address string  `json:"address"`
+	Name    string `json:"name"`
+	Address string `json:"address"`
 }
 
 func TestInit(t *testing.T) {
-	var configFile  ="../../conf/dev.yml"
+	var configFile = "../../conf/dev.yml"
 	_ = cfg.Initcfg(configFile)
-	var config=cfg.GetConfig()
+	var config = cfg.GetConfig()
 
 	host := config.Redis.Host
 	auth := config.Redis.Password
@@ -28,8 +28,8 @@ func TestInit(t *testing.T) {
 
 	_ = Init(host, auth, rdb, maxActive)
 
-	defaultRedis.Set("user","info")
-	b,err:=defaultRedis.Get("user")
+	defaultRedis.Set("user", "info")
+	b, err := defaultRedis.Get("user")
 	//var mp2  user
 	//json.Unmarshal(b,&mp2)
 	fmt.Println(err)

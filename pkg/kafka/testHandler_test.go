@@ -12,15 +12,13 @@ import (
 	"testing"
 )
 
-func TestConsumer(t *testing.T)  {
-
-
+func TestConsumer(t *testing.T) {
 
 }
 
 func TestSendEvent(t *testing.T) {
 	//加载config
-	var configFile  ="../../conf/dev.yml"
+	var configFile = "../../conf/dev.yml"
 	_ = cfg.Initcfg(configFile)
 	Init()
 
@@ -31,9 +29,9 @@ func TestSendEvent(t *testing.T) {
 		Type:    "test",
 		Account: "123",
 		Time:    util.GetNowDateTimeFormat(),
-		Body:   map[string]interface{}{"name":"张三aaa"},
+		Body:    map[string]interface{}{"name": "张三aaa"},
 	}
-	err :=SendEvent(&eventDataCus)
-	fmt.Println("err:",err)
+	err := SendEvent(&eventDataCus)
+	fmt.Println("err:", err)
 	fmt.Println("sent success")
 }

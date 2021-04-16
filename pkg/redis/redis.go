@@ -26,7 +26,7 @@ func GetDefaultDB() *Redis {
 // 新打开一个数据库对象，如果程序中需要同时打开多个数据库，则可以用此方法。
 func NewRedis(host, auth string, db, maxActive int) (*Redis, error) {
 	redisConn := &redis.Pool{
-		MaxActive:   maxActive,
+		MaxActive: maxActive,
 		Dial: func() (redis.Conn, error) {
 			c, err := redis.Dial("tcp",
 				host,
@@ -104,4 +104,3 @@ func HVals(name string) ([][]byte, error) {
 func HGetall(name string) ([][]byte, error) {
 	return defaultRedis.HGetall(name)
 }
-

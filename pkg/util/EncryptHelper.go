@@ -9,7 +9,6 @@ import (
 	"io"
 )
 
-
 const HEX string = "0123456789ABCDEF"
 
 func Encrypt(plainText string, key string) (string, error) {

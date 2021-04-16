@@ -5,4 +5,5 @@ logs/*.log
 vendor/
 test/
 static/files/*.png
+micro_server/
 

@@ -15,6 +15,10 @@ var defaultDB *gorm.DB
 
 // 初始化默认数据库
 func InitDefaultDB(source, driver string, cfg *gorm.Config) (db *gorm.DB, err error) {
+	if cfg == nil {
+		//cfg不能为nil
+		cfg = &gorm.Config{}
+	}
 	db, err = NewDB(source, driver, cfg)
 	if err != nil {
 		return nil, err

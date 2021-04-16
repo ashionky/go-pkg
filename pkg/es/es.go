@@ -9,8 +9,7 @@ import (
 
 var client *elastic.Client
 var ctx = context.Background()
-var config  = cfg.GetConfig()
-
+var config = cfg.GetConfig()
 
 //初始化es客户端连接
 func Init() error {
@@ -25,15 +24,15 @@ func Init() error {
 		elastic.SetSniff(false),
 	)
 	if err != nil {
-		fmt.Println("NewClient err ",err)
+		fmt.Println("NewClient err ", err)
 		return err
 	}
 	info, code, err := client.Ping(url).Do(ctx)
 	if err != nil {
-		fmt.Println("Ping err ",err)
+		fmt.Println("Ping err ", err)
 		return err
 	}
-	fmt.Println("code:",code)
+	fmt.Println("code:", code)
 	if code == 200 {
 		fmt.Printf("connected to es: %s ,version: %s \n", info.ClusterName, info.Version.Number)
 	}
@@ -46,8 +45,7 @@ func getClient() *elastic.Client {
 		return client
 	} else {
 		err := Init()
-		fmt.Println("init err ",err)
+		fmt.Println("init err ", err)
 		return client
 	}
 }
-

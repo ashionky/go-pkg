@@ -10,14 +10,16 @@ import (
 	"go-pkg/pkg/cfg"
 	"testing"
 )
+
 type user struct {
-	Name string `json:"name"`
-	Address string  `json:"address"`
+	Name    string `json:"name"`
+	Address string `json:"address"`
 }
-func TestMG( t *testing.T)  {
-	var configFile  ="../../conf/dev.yml"
+
+func TestMG(t *testing.T) {
+	var configFile = "../../conf/dev.yml"
 	_ = cfg.Initcfg(configFile)
-	var config=cfg.GetConfig()
+	var config = cfg.GetConfig()
 
 	host := config.Redis.Host
 	auth := config.Redis.Password
@@ -26,11 +28,7 @@ func TestMG( t *testing.T)  {
 
 	_ = RedisInit(host, auth, rdb, maxActive)
 
-
-	Hincrby("key","field2",3)
-	fmt.Println(HincrbyWithResult("key","field2",3))
-
-
-
+	Hincrby("key", "field2", 3)
+	fmt.Println(HincrbyWithResult("key", "field2", 3))
 
 }

@@ -1,9 +1,9 @@
 package file
 
 import (
-	"context"
 	"bufio"
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -205,15 +205,15 @@ func GetCurrentPath() string {
 	return strings.Replace(dir, "\\", "/", -1)
 }
 
-func WriteJson(mp map[string]interface{},path string) error {
-	b, err := json.MarshalIndent(mp,"","\t")
+func WriteJson(mp map[string]interface{}, path string) error {
+	b, err := json.MarshalIndent(mp, "", "\t")
 	if err != nil {
 		fmt.Println(err)
 		return err
 	}
 
 	//生成json文件
-	err = ioutil.WriteFile(path, b,os.ModePerm)
+	err = ioutil.WriteFile(path, b, os.ModePerm)
 	if err != nil {
 		fmt.Println(err)
 		return err
@@ -221,14 +221,13 @@ func WriteJson(mp map[string]interface{},path string) error {
 	return nil
 }
 
-
-func ReadJson(mp map[string]interface{},path string) error {
-	by,err:=ioutil.ReadFile(path)
-	if err !=nil {
+func ReadJson(mp map[string]interface{}, path string) error {
+	by, err := ioutil.ReadFile(path)
+	if err != nil {
 		return err
 	}
-	err=json.Unmarshal(by,&mp)
-	if err !=nil {
+	err = json.Unmarshal(by, &mp)
+	if err != nil {
 		return err
 	}
 	return nil

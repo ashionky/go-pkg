@@ -5,8 +5,8 @@ import (
 	"github.com/Shopify/sarama"
 	"go-pkg/pkg/log"
 	"sync"
-
 )
+
 type kafkaHandler interface {
 	HandleKafkaMsg(message *ReportEvent) error
 }

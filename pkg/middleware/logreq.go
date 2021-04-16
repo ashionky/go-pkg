@@ -2,13 +2,12 @@ package middleware
 
 import (
 	"bytes"
-	"go-pkg/pkg/log"
 	"github.com/gin-gonic/gin"
+	"go-pkg/pkg/log"
 	"io/ioutil"
 )
 
 // 记录请求信息
-
 
 func LogRequestMiddleware(c *gin.Context) {
 	body, _ := ioutil.ReadAll(c.Request.Body)

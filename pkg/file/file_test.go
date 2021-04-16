@@ -12,14 +12,15 @@ import (
 )
 
 type data struct {
-	Id  int  `json:"id"`
-	Name  string  `json:"name"`
-	Arr   []string  `json:"arr"`
+	Id   int      `json:"id"`
+	Name string   `json:"name"`
+	Arr  []string `json:"arr"`
 }
+
 func TestDownJson(t *testing.T) {
-	mp:=map[string]interface{}{}
-    path:="./test.json"
-	_=ReadJson(mp,path)
+	mp := map[string]interface{}{}
+	path := "./test.json"
+	_ = ReadJson(mp, path)
 	fmt.Println(mp)
 
 }

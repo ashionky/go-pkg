@@ -8,7 +8,7 @@ import (
 func TestSnowFlakeByGo(t *testing.T) {
 
 	err := InitSnowflake("host1")
-	if err!=nil {
+	if err != nil {
 		fmt.Print("init snowflakeId has error %v", err)
 	}
 
@@ -17,8 +17,8 @@ func TestSnowFlakeByGo(t *testing.T) {
 		t.Errorf("init snowflakeId has error %v", err)
 	}
 	//id := worker.GetId()
-	fmt.Println("id1:",worker.GetId())
-	fmt.Println("id2:",worker.GetId())
-	fmt.Println("id3:",worker.GetId())
+	fmt.Println("id1:", worker.GetId())
+	fmt.Println("id2:", worker.GetId())
+	fmt.Println("id3:", worker.GetId())
 
 }

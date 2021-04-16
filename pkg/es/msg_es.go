@@ -39,7 +39,6 @@ func AddMessage(message map[string]interface{}, account string) error {
 	}
 }
 
-
 /*
   account   //类似路由
   eq       //完全匹配
@@ -58,7 +57,7 @@ func SearchMessage(account string, msgContent string) (ids []string, err error) 
 		Index(EsMsgIdxName + strconv.Itoa(idx) + ALIASE).
 		Type(TYPE).Routing(account).
 		Query(query).
-		StoredFields("_id").     //搜索需要的字段
+		StoredFields("_id"). //搜索需要的字段
 		From(0).Size(1000).  //搜索尺码记录数
 		Do(ctx)
 	if err != nil {
@@ -75,11 +74,11 @@ func SearchMessage(account string, msgContent string) (ids []string, err error) 
 }
 
 /**
-  全量数据查询
-  account   //类似路由
-  msgContent //模糊匹配
-  begin end  //范围匹配
- return []map[string]interface{}  ** 直接返回数据（所有字段）
+ 全量数据查询
+ account   //类似路由
+ msgContent //模糊匹配
+ begin end  //范围匹配
+return []map[string]interface{}  ** 直接返回数据（所有字段）
 */
 func SearchMessageAll(account string, msgContent string) (data []map[string]interface{}, err error) {
 	idx := util.GetHashCode(account, EsStdIdxCount)

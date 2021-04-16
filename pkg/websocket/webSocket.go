@@ -28,7 +28,7 @@ type Message struct {
 	Content string `json:"content"` //消息内容，可以是对象
 }
 
-var clients = sync.Map{}       // 用户组映射  user -client
+var clients = sync.Map{}                 // 用户组映射  user -client
 var MesChannel = make(chan Message, 500) // 消息通道
 
 var join = make(chan Client, 100)  // 用户加入通道
@@ -61,22 +61,22 @@ func WS(c *gin.Context) {
 		return
 	}
 
-	 client := Client{
-		 conn:    conn,
-		 user_id: user_id,
-	 }
+	client := Client{
+		conn:    conn,
+		user_id: user_id,
+	}
 
 	// 如果用户列表中没有该用户
 	if _, ok := clients.Load(user_id); !ok {
-		clients.Store(user_id,client) // 将用户加入map
+		clients.Store(user_id, client) // 将用户加入map
 		join <- client
 	}
 
 	// 当函数返回时，将该用户加入退出通道，并断开用户连接
 	defer func() {
-		    clients.Delete(client.user_id)
-			leave <- client //离开
-			client.conn.Close()
+		clients.Delete(client.user_id)
+		leave <- client //离开
+		client.conn.Close()
 	}()
 
 	for {
@@ -116,10 +116,10 @@ func broadcaster() {
 			//广播给在线的用户
 			clients.Range(func(key, value interface{}) bool {
 				if client, ok := clients.Load(key); ok {
-					if c,ok:=client.(Client);ok{
+					if c, ok := client.(Client); ok {
 						if err := c.conn.WriteMessage(websocket.TextMessage, []byte(content)); err != nil {
 							fmt.Println("push fail userid:", key)
-						}else {
+						} else {
 							fmt.Println("push success userid:", key)
 						}
 					}

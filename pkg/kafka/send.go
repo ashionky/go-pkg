@@ -11,14 +11,13 @@ import (
 	"time"
 )
 
-
 //最大批量推送消息数量
 const maxBatchNum int = 500
 
 var kfkConfig *sarama.Config
 var kfkOrderConfig *sarama.Config
 var Addresses []string
-var config  = cfg.GetConfig()
+var config = cfg.GetConfig()
 
 func getKafkaConfig() *sarama.Config {
 	if kfkConfig == nil {

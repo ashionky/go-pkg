@@ -13,14 +13,12 @@ import (
 	"testing"
 )
 
-
 //后台直接上传
 func TestGoApiTemplate(t *testing.T) {
 	region := "oss-cn-beijing.aliyuncs.com"
 	accessKeyId := ""
-	accessKeySecret :=""
+	accessKeySecret := ""
 	//stsToken :=""
-
 
 	// 创建OSSClient实例。
 	//option:=oss.SecurityToken(stsToken)   //sts访问时，需设置
@@ -30,14 +28,13 @@ func TestGoApiTemplate(t *testing.T) {
 		os.Exit(-1)
 	}
 
-
 	// 获取存储空间。
 	bucket, err := client.Bucket("test")
 	if err != nil {
 		fmt.Println("Error:", err)
 		os.Exit(-1)
 	}
-	var file="/Users/Desktop/WechatIMG23.png"
+	var file = "/Users/Desktop/WechatIMG23.png"
 	// 上传本地文件。
 	err = bucket.PutObjectFromFile("acs/qq.png", file)
 	if err != nil {
@@ -45,12 +42,11 @@ func TestGoApiTemplate(t *testing.T) {
 		os.Exit(-1)
 	}
 
-
 }
 
 //前端上传，到后端获取临时token信息
-func TestGetToken(t *testing.T)  {
-	client :=NewStsClient("","","")  //配置中取值
+func TestGetToken(t *testing.T) {
+	client := NewStsClient("", "", "") //配置中取值
 	url, err := client.GenerateSignatureUrl("test", "")
 	if err != nil {
 		fmt.Print("GenerateSignatureUrl err")
@@ -69,5 +65,5 @@ func TestGetToken(t *testing.T)  {
 		fmt.Print("Unmarshal err")
 		return
 	}
-	fmt.Print("token认证信息：",ali.Credentials)
+	fmt.Print("token认证信息：", ali.Credentials)
 }

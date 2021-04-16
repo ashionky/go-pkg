@@ -43,6 +43,5 @@ func InitRouter() *gin.Engine {
 		pri.POST("/signout", handler.SignOut)
 	}
 
-
 	return r
 }

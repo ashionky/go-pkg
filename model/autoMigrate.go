@@ -7,6 +7,6 @@ package model
 
 import "go-pkg/pkg/db"
 
-func InitTables()  {
+func InitTables() {
 	db.GetDB().AutoMigrate(User{})
 }

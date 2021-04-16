@@ -32,12 +32,12 @@ func GRPCServerInit(address string) (err error) {
 	go func() {
 		fmt.Println("gRPC start")
 		if err := s.Serve(listen); err != nil {
-		fmt.Println("gRPC.error: ", err)
+			fmt.Println("gRPC.error: ", err)
 			panic(err)
 		}
 		fmt.Println("gRPC end")
 	}()
-	fmt.Println("grpc init success port:",address)
+	fmt.Println("grpc init success port:", address)
 
 	return
 }

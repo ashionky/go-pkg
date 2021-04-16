@@ -13,16 +13,16 @@ type TestEventHandler struct {
 }
 
 func (handler TestEventHandler) HandleKafkaMsg(message *ReportEvent) (err error) {
-	if  checkTestRepeatEvent(message.Id) {
+	if checkTestRepeatEvent(message.Id) {
 		err = errors.New("event msg repeat id: " + message.Id)
 		return err
 	}
 	switch message.Type {
 	case "test":
-	   //todo 处理数据message。。。。
-	   fmt.Println("body==",message.Body)
+		//todo 处理数据message。。。。
+		fmt.Println("body==", message.Body)
 
-		CopyTestEvent(message)  //记录已处理的消息
+		CopyTestEvent(message) //记录已处理的消息
 	default:
 		fmt.Println("can not process event:" + message.Type)
 	}
@@ -55,6 +55,5 @@ func checkTestRepeatEvent(id string) bool {
 记录已处理事件，用于消费事件的时候过滤重复事件
 */
 func CopyTestEvent(eventData *ReportEvent) {
-
 
 }

@@ -87,12 +87,11 @@ func setPrefix(level Level) {
 	logger.SetPrefix(logPrefix)
 }
 
-
 // getLogFileName get the save name of the log file
 func getLogFileName() string {
-	return fmt.Sprintf("log_%s.log",time.Now().Format("20060102"))
+	return fmt.Sprintf("log_%s.log", time.Now().Format("20060102"))
 }
 
 func getLogFilePath() string {
-	return fmt.Sprintf("%s",  "logs/")
+	return fmt.Sprintf("%s", "logs/")
 }

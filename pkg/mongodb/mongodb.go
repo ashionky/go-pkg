@@ -16,7 +16,6 @@ type Regex bson.RegEx
 var s *mgo.Session
 var defaultDb string
 
-
 func getSession() *mgo.Session {
 	//if s == nil {
 	//	err := MongoInit()
@@ -27,8 +26,7 @@ func getSession() *mgo.Session {
 	return s.Clone()
 }
 
-
-func MongoInit(url, dbname string,poolsize int) error {
+func MongoInit(url, dbname string, poolsize int) error {
 	session, err := mgo.Dial(url)
 	if err != nil {
 		fmt.Println("mongodb init fail!")
@@ -166,7 +164,6 @@ func DBFindPageSort(db string, c string, query B, skip int, limit int, sort stri
 		return session.DB(db).C(c).Find(query).Sort(sort).All(result)
 	}
 }
-
 
 func DbFindByFields(db string, c string, query B, field B, result interface{}) error {
 	session := getSession()

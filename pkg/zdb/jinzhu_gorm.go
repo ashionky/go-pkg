@@ -2,10 +2,10 @@ package zdb
 
 import (
 	"fmt"
+	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
-	"github.com/jinzhu/gorm"
 	"strings"
 )
 
@@ -19,7 +19,7 @@ func InitDefaultDB(source, driver string) (db *gorm.DB, err error) {
 		return nil, err
 	}
 	defaultDB = db
-	defaultDB.LogMode(true)   //打印详细sql日志
+	defaultDB.LogMode(true) //打印详细sql日志
 	fmt.Println("db init success")
 	return defaultDB, nil
 }

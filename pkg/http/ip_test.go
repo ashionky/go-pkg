@@ -15,5 +15,3 @@ func TestIp(t *testing.T) {
 	fmt.Println(ips)
 	fmt.Println(e)
 }
-
-

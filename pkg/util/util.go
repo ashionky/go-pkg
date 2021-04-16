@@ -35,8 +35,3 @@ func GenNumberToken(size int) string {
 	}
 	return string(bytes)
 }
-
-
-
-
-

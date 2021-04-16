@@ -12,13 +12,13 @@ import (
 	"go-pkg/pkg/vo"
 )
 
-func UploadFile(c *gin.Context)  {
+func UploadFile(c *gin.Context) {
 	res := vo.GetDefaultResult()
-	data,err:=file.UploadFile(c)
+	data, err := file.UploadFile(c)
 	if err != nil {
-		vo.SendFailure(c,constant.InternalError,res)
+		vo.SendFailure(c, constant.InternalError, res)
 		return
 	}
-	res.Data=data
-	vo.SendSuccess(c,res)
+	res.Data = data
+	vo.SendSuccess(c, res)
 }

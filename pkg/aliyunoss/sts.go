@@ -1,4 +1,3 @@
-
 package aliyunoss
 
 import (
@@ -6,15 +5,15 @@ import (
 	"crypto/sha1"
 	"crypto/tls"
 	"encoding/base64"
+	"go-pkg/pkg/util"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strconv"
 	"time"
-	"go-pkg/pkg/util"
 )
 
-const OSS_TTL  =3600*4   //设置默认有效时间   此时间只能在角色最大会话时间范围内
+const OSS_TTL = 3600 * 4 //设置默认有效时间   此时间只能在角色最大会话时间范围内
 type AliyunStsClient struct {
 	ChildAccountKeyId  string
 	ChildAccountSecret string
@@ -32,6 +31,7 @@ type assumedRoleUser struct {
 	AssumedRoleId string `json:"assumedRoleId"`
 	Arn           string `json:"arn"`
 }
+
 //获取临时token时候，阿里返回的数据结构体 ali := aliOssMsg{}
 type aliOssMsg struct {
 	RequestId       string          `json:"requestId"`
@@ -42,15 +42,14 @@ type aliOssMsg struct {
 	Message         string          `json:"message"`
 }
 
-
-
-func NewStsClient(oss_key,oss_secret,oss_role_acs string) *AliyunStsClient {
+func NewStsClient(oss_key, oss_secret, oss_role_acs string) *AliyunStsClient {
 	return &AliyunStsClient{
 		ChildAccountKeyId:  oss_key,
 		ChildAccountSecret: oss_secret,
 		RoleAcs:            oss_role_acs,
 	}
 }
+
 /*
 sessionName       区别其它token
 durationSeconds   有效时间
@@ -74,7 +73,7 @@ func (cli *AliyunStsClient) GenerateSignatureUrl(sessionName, durationSeconds st
 	//if ttl < 900 || ttl > 3600 {
 	//	durationSeconds = OSS_TTL
 	//}
-	durationSeconds =strconv.Itoa(OSS_TTL)
+	durationSeconds = strconv.Itoa(OSS_TTL)
 	assumeUrl += "&DurationSeconds=" + durationSeconds
 
 	// 解析成V type

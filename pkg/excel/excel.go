@@ -5,15 +5,12 @@
 
 package excel
 
-
-
 import (
 	"fmt"
 	"github.com/360EntSecGroup-Skylar/excelize"
+	"github.com/plandem/xlsx"
 	"strconv"
-    "github.com/plandem/xlsx"
 )
-
 
 /**
  * 导出Excel表格
@@ -45,37 +42,35 @@ func ExportExcel(name string, header []string, headerKV map[string]string, data 
 
 	f.SetActiveSheet(index)
 	fileName = name + ".xlsx"       //文件名称
-	fileNamePath := "./" + fileName  //保存文件的位置
+	fileNamePath := "./" + fileName //保存文件的位置
 	err = f.SaveAs(fileNamePath)
 	return
 }
 
-
-
 /*
 读取excel表中数据,返回list，可改用结构体list
 */
-func UploadExcel(filePath string,head []string)([]map[string]interface{}) {
-	list := make([]map[string]interface{},0)
-	if len(head)==0 {
+func UploadExcel(filePath string, head []string) []map[string]interface{} {
+	list := make([]map[string]interface{}, 0)
+	if len(head) == 0 {
 		return list
 	}
 	xl, err := xlsx.Open(filePath)
 	if err != nil {
-		fmt.Print("打开文件err：",err)
+		fmt.Print("打开文件err：", err)
 		return list
 	}
 	defer xl.Close()
-	sheet := xl.Sheet(0, xlsx.SheetModeIgnoreDimension)  //读取模式
+	sheet := xl.Sheet(0, xlsx.SheetModeIgnoreDimension) //读取模式
 	_, totalRows := sheet.Dimension()
 	for row := 1; row < totalRows; row++ {
-		rowmap:=make(map[string]interface{})
+		rowmap := make(map[string]interface{})
 		for col := 0; col < len(head); col++ {
 			value := sheet.Cell(col, row).String()
-			field :=head[col]
-			rowmap[field]=value
+			field := head[col]
+			rowmap[field] = value
 		}
-		list=append(list,rowmap)
+		list = append(list, rowmap)
 	}
 	return list
 }

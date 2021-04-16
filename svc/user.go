@@ -19,9 +19,9 @@ import (
 // 用户登陆
 func SignIn(param *params.SigninReq) (rsp *params.SigninRsp, err error) {
 	var user model.User
-	err =db.GetDB().Table(model.User{}.TableName()).
-		Where("phone=? and password=?",param.Phone,param.Password).
-	    First(&user).Error
+	err = db.GetDB().Table(model.User{}.TableName()).
+		Where("phone=? and password=?", param.Phone, param.Password).
+		First(&user).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return nil, err
@@ -62,7 +62,6 @@ func SignIn(param *params.SigninReq) (rsp *params.SigninRsp, err error) {
 
 	return rsp, nil
 }
-
 
 // 用户登出
 func SignOut(token string) error {

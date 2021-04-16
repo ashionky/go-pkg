@@ -6,8 +6,8 @@
 package cfg
 
 import (
-"fmt"
-"github.com/jinzhu/configor"
+	"fmt"
+	"github.com/jinzhu/configor"
 )
 
 //配置文件对象
@@ -15,44 +15,44 @@ type Config struct {
 	APPName string `default:"appname"`
 
 	Server struct {
-		Appmode    string `default:"dev"`
-		Http_port  string `default:"80"`
+		Appmode   string `default:"dev"`
+		Http_port string `default:"80"`
 	}
 
 	Mysql struct {
-		Host string      `default:"127.0.0.1:3306"`
-		User      string `default:"root"`
-		Password  string
-		Dbname    string
-		Charset   string `default:"utf8mb4"`
+		Host     string `default:"127.0.0.1:3306"`
+		User     string `default:"root"`
+		Password string
+		Dbname   string
+		Charset  string `default:"utf8mb4"`
 	}
-	Mongodb struct{
-		Host      string   `default:"127.0.0.1"`
-		Port      string   `default:"27017"`
-		User      string   `default:"root"`
-		Password  string
-		Dbname    string
-		Poolsize   int     `default:"10"`
+	Mongodb struct {
+		Host     string `default:"127.0.0.1"`
+		Port     string `default:"27017"`
+		User     string `default:"root"`
+		Password string
+		Dbname   string
+		Poolsize int `default:"10"`
 	}
 
 	Redis struct {
-		Host      string   `default:"127.0.0.1:6379"`
-		Password  string   `default:""`
-		Db         int     `default:"0"`    //库
-		Max_active int     `default:"30"`   //最大连接数
+		Host       string `default:"127.0.0.1:6379"`
+		Password   string `default:""`
+		Db         int    `default:"0"`  //库
+		Max_active int    `default:"30"` //最大连接数
 	}
 	Alioss struct {
-	     Oss_key       string
-	     Oss_secret    string
-	     Oss_role_acs  string
-		 Oss_bucket    string
-    }
-	Kafka struct{
-		Url       string
-		Groupid   string
-		Topic     string
+		Oss_key      string
+		Oss_secret   string
+		Oss_role_acs string
+		Oss_bucket   string
 	}
-	Es struct{
+	Kafka struct {
+		Url     string
+		Groupid string
+		Topic   string
+	}
+	Es struct {
 		Url      string
 		User     string
 		Password string
@@ -76,4 +76,3 @@ func Initcfg(path string) error {
 func GetConfig() *Config {
 	return &config
 }
-

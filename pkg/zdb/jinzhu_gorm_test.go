@@ -5,11 +5,10 @@
 
 package zdb
 
-
 import (
 	"fmt"
-	"go-pkg/pkg/cfg"
 	"github.com/jinzhu/gorm"
+	"go-pkg/pkg/cfg"
 	"testing"
 )
 
@@ -24,9 +23,9 @@ func (Test) TableName() string {
 }
 
 func TestInitDefaultDB(t *testing.T) {
-	var configFile  ="../../conf/dev.yml"
+	var configFile = "../../conf/dev.yml"
 	_ = cfg.Initcfg(configFile)
-	var config=cfg.GetConfig()
+	var config = cfg.GetConfig()
 	driver := "mysql"
 
 	user := config.Mysql.User
@@ -41,19 +40,15 @@ func TestInitDefaultDB(t *testing.T) {
 	//tt:=Test{
 	//	Name:  "33",
 	//}
-	count :=0
+	count := 0
 	defaultDB.Table("test_b").Count(&count)
-	fmt.Println("1===",count)
+	fmt.Println("1===", count)
 	//defaultDB.Table("test_b").Save(&tt)
 
-
-
-	defaultDB.Table("test_b").Where("id=?",3).Delete(&Test{})
+	defaultDB.Table("test_b").Where("id=?", 3).Delete(&Test{})
 
 	defaultDB.Table("test_b").Count(&count)
 
-	fmt.Println("2===",count)
-
+	fmt.Println("2===", count)
 
 }
-

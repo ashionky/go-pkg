@@ -12,18 +12,18 @@ import (
 )
 
 func TestMongoInit(t *testing.T) {
-	var configFile  ="../../conf/dev.yml"
+	var configFile = "../../conf/dev.yml"
 	_ = cfg.Initcfg(configFile)
-	config:=cfg.GetConfig()
+	config := cfg.GetConfig()
 	var url = "mongodb://" + config.Mongodb.User + ":" + config.Mongodb.Password + "@" + config.Mongodb.Host + ":" + config.Mongodb.Port + "/admin"
-	MongoInit(url,config.Mongodb.Dbname,config.Mongodb.Poolsize)
-    mp:=map[string]interface{}{
-    	"name":"lisi",
-    	"age":10,
+	MongoInit(url, config.Mongodb.Dbname, config.Mongodb.Poolsize)
+	mp := map[string]interface{}{
+		"name": "lisi",
+		"age":  10,
 	}
-	DbInsert("test","user",mp)
-    map1:=make(map[string]interface{})
-    DbFindOne("test","user",B{},&map1)
-    fmt.Print(map1)
+	DbInsert("test", "user", mp)
+	map1 := make(map[string]interface{})
+	DbFindOne("test", "user", B{}, &map1)
+	fmt.Print(map1)
 
 }

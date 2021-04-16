@@ -2,11 +2,11 @@ package util
 
 import (
 	"crypto/md5"
+	"encoding/hex"
+	"github.com/satori/go.uuid"
 	"hash/crc32"
 	"regexp"
 	"strings"
-	"encoding/hex"
-	"github.com/satori/go.uuid"
 )
 
 func UUID() string {
@@ -36,7 +36,6 @@ func MD5(key string) string {
 
 	return hex.EncodeToString(ha.Sum(nil))
 }
-
 
 func GetHashCode(str string, count int) int {
 	v := crc32.ChecksumIEEE([]byte(str))
@@ -103,6 +102,7 @@ func DistinctStringSlice(strSlice *[]string) {
 		}
 	}
 }
+
 //手机号验证
 func ValitatorPhone(p string) bool {
 	rex := `^(1(([35][0-9])|[8][0-9]|[9][0-9]|[6][0-9]|[7][01356789]|[4][579]))\d{8}$`

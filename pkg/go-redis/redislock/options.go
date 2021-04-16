@@ -1,4 +1,3 @@
-
 package redislock
 
 import "time"

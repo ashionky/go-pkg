@@ -42,9 +42,7 @@ func SendSuccess(ctx *gin.Context, rep *Result) {
 /**
 请求处理失败，发送响应的统一处理
 */
-func SendFailure(ctx *gin.Context,code int, rep *Result) {
+func SendFailure(ctx *gin.Context, code int, rep *Result) {
 	rep.Set(code, rep.Msg)
 	ctx.AbortWithStatusJSON(http.StatusOK, rep)
 }
-
-

@@ -9,14 +9,15 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	"go-pkg/model"
 	"go-pkg/pkg/cfg"
 	"go-pkg/pkg/db"
+	redis "go-pkg/pkg/go-redis"
 	"go-pkg/pkg/kafka"
 	"go-pkg/pkg/log"
 	"go-pkg/pkg/mongodb"
-	redis "go-pkg/pkg/go-redis"
 	"go-pkg/router"
 	"net/http"
 	"os"
@@ -26,10 +27,9 @@ import (
 	"time"
 )
 
+var config = cfg.GetConfig()
 
-var config=cfg.GetConfig()
-
-func main()  {
+func main() {
 	mode := flag.String("m", "dev", "指定执行模式,只支持[dev|test|prod],默认是dev")
 	flag.Parse()
 	dev := true
@@ -41,7 +41,7 @@ func main()  {
 	} else {
 		gin.SetMode(gin.ReleaseMode)
 	}
-   //初始化config
+	//初始化config
 	configFile := fmt.Sprintf("./conf/%s.yml", *mode)
 	err := cfg.Initcfg(configFile)
 	if err != nil {
@@ -52,7 +52,7 @@ func main()  {
 	//初始化日志工具
 	log.InitLog()
 
-    //初始化数据库连接
+	//初始化数据库连接
 	err = InitDB()
 	if err != nil {
 		fmt.Printf("数据库初始化失败: %s\n", err.Error())
@@ -61,14 +61,14 @@ func main()  {
 	}
 
 	//mongo初始化
-	err =InitMongodb()
+	err = InitMongodb()
 	if err != nil {
 		fmt.Printf("mongodb初始化失败: %s\n", err.Error())
 		log.Info("mongodb初始化失败", err.Error())
 		os.Exit(3)
 	}
 
-    //初始化redis
+	//初始化redis
 	err = InitRedis()
 	if err != nil {
 		fmt.Printf("redis初始化失败: %s\n", err.Error())
@@ -76,8 +76,10 @@ func main()  {
 		os.Exit(4)
 	}
 
-    //初始化路由组
+	//初始化路由组
 	r := router.InitRouter()
+	// 调试模式，开启 pprof 包，便于开发阶段分析程序性能
+	pprof.Register(r)
 
 	// kafka的上下文
 	kafka.Init()
@@ -141,6 +143,6 @@ func InitRedis() error {
 //mongodb连接
 func InitMongodb() error {
 	var url = "mongodb://" + config.Mongodb.User + ":" + config.Mongodb.Password + "@" + config.Mongodb.Host + ":" + config.Mongodb.Port + "/admin"
-	err :=mongodb.MongoInit(url,config.Mongodb.Dbname,config.Mongodb.Poolsize)
+	err := mongodb.MongoInit(url, config.Mongodb.Dbname, config.Mongodb.Poolsize)
 	return err
 }
