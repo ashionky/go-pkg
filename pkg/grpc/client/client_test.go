@@ -49,7 +49,9 @@ func GetgRpcClient(address string) {
 func TestH(t *testing.T) {
 	server.GRPCServerInit("") //grpc服务启动
 
-	GetList()
+	Getone("1")
+	Getone("2")
+	//GetList()
 }
 
 func GetList() {
@@ -71,9 +73,27 @@ func GetList() {
 		fmt.Println("gRPC GetList err:", err)
 		return
 	}
-	for _, v := range r.List {
+	fmt.Println("rpc data:", r)
+	for _, v := range r.Data {
 		fmt.Println("id==", v.Id, "name==", string(v.Name))
 	}
+
+	return
+}
+
+func Getone(id string) {
+
+	// 调用方法
+	reqBody := new(protos.Request)
+	reqBody.Id = id
+
+	r, err := rpcTestclient.TestClient.GetOne(context.Background(), reqBody)
+	if err != nil {
+		fmt.Println("gRPC Getone err:", err)
+		return
+	}
+	fmt.Println("rpc data:", r)
+	fmt.Println("id==", r.Data.Id, "name==",r.Data.Name)
 
 	return
 }

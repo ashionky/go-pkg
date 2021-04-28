@@ -31,6 +31,7 @@ require (
 	github.com/shamsher31/goimgtype v1.0.0
 	github.com/swaggo/gin-swagger v1.3.0
 	github.com/unknwon/com v1.0.1
+	go.uber.org/ratelimit v0.2.0
 	golang.org/x/crypto v0.0.0-20201112155050-0c6587e931a9
 	golang.org/x/net v0.0.0-20201202161906-c7110b5ffcbb
 	golang.org/x/time v0.0.0-20190308202827-9d24e82272b4 // indirect

@@ -4,20 +4,31 @@
  */
 syntax = "proto3";
 package protos;
+option go_package = ".;protos";
 
 service Test {
 	rpc GetList(Request) returns (Respose) {}
+    rpc GetOne(Request) returns (Respose2) {}
 }
 
 
 message Request{
-	string name =1;
+	string id =1;
 }
 
+message User {
+    string id = 1;
+    string name =2;
+}
 message Respose {
-    repeated List list = 1;
-    message List {
-       string id = 1;
-       string name =2;
-    }
+	int64 Code =1;
+	string Msg =2;
+    repeated User Data = 3;
+}
+
+
+message Respose2{
+     int64 Code =1;
+     string Msg =2;
+     User Data =3;
 }

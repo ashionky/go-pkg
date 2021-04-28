@@ -46,6 +46,8 @@ snowflake:     雪花id的生成              ---pkg/snowflake
 请求响应日志输出                          ---pkg/middleware/logreq.go
 mqtt:                                  ---pkg/mqtt
 redis-lua执行工具方法:                   ---pkg/redisluascriptloader/redis_lua_script_loader.go
+函数调用限速ratelimit:                   --- pkg/ratelimit/
+
 
 ```
 

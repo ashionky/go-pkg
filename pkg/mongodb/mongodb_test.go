@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"go-pkg/pkg/cfg"
 	"testing"
+	"time"
 )
 
 func TestMongoInit(t *testing.T) {
@@ -20,10 +21,29 @@ func TestMongoInit(t *testing.T) {
 	mp := map[string]interface{}{
 		"name": "lisi",
 		"age":  10,
+		"createdAt":time.Now(),
 	}
+
+	CreateIndex("test", "user",  "createdAt",  60  )
+
+
 	DbInsert("test", "user", mp)
-	map1 := make(map[string]interface{})
-	DbFindOne("test", "user", B{}, &map1)
-	fmt.Print(map1)
+	fmt.Println("=1=",time.Now())
+	//map1 := make(map[string]interface{})
+	//DbFindOne("test", "user", B{}, &map1)
+	//fmt.Print(map1)
+
+	time.Sleep(50*time.Second)
+	mp2 := B{
+		"name": "qq",
+		"field1":"beijing",
+		"createdAt":time.Now(),
+	}
+
+	err := DbUpdateOne("test", "user", B{"age": 10}, mp2).Error()
+	fmt.Println("=2=",time.Now())
+	fmt.Println("err=",err)
 
 }
+
+

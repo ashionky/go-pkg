@@ -8,6 +8,7 @@ import (
 	"io"
 	"mime/multipart"
 	"reflect"
+	"time"
 )
 
 type B bson.M
@@ -583,4 +584,17 @@ func DbBulkUpdateAll(db, c string, pairs []interface{}) error {
 	bulk.UpdateAll(pairs...)
 	_, err := bulk.Run()
 	return err
+}
+
+//创建索引,若second>0 ,则为ttl索引
+func CreateIndex(db, c ,field string,second int64)  (error) {
+	session := getSession()
+	defer session.Close()
+	index:=mgo.Index{
+		Key:  []string{field},
+	}
+	if second>0 {
+		index.ExpireAfter=time.Duration(second)*time.Second
+	}
+	return session.DB(db).C(c).EnsureIndex(index)
 }
