@@ -8,10 +8,15 @@ package client
 import (
 	"context"
 	"fmt"
+	"github.com/satori/go.uuid"
 	"go-pkg/pkg/grpc/protos"
 	"go-pkg/pkg/grpc/server"
+	"go-pkg/pkg/util"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
 	"testing"
+	"time"
 )
 
 //方便多个rpc客户端注册
@@ -50,7 +55,7 @@ func TestH(t *testing.T) {
 	server.GRPCServerInit("") //grpc服务启动
 
 	Getone("1")
-	Getone("2")
+	//Getone("2")
 	//GetList()
 }
 
@@ -81,19 +86,45 @@ func GetList() {
 	return
 }
 
+
+func CreateCtxByBackground() context.Context {
+	ctx:=context.Background()
+	requestId := uuid.NewV4().String()
+	spanid := util.Md5(requestId)
+	traceid := util.Md5(spanid)
+	newmd := metadata.MD{}
+
+	newmd.Set( "x-b3-sampled", "1")
+	newmd.Set( "x-b3-spanid", spanid[0:16])
+	newmd.Set( "x-b3-traceid", traceid)
+	newmd.Set( "x-request-id", requestId)
+	newmd.Set( "caller", "mssiot_forum")
+
+	ctx=metadata.NewOutgoingContext(ctx, newmd)
+	ctx = context.WithValue(ctx, "traceId", traceid)
+	ctx = context.WithValue(ctx, "requestTime", time.Now())
+	return ctx
+}
+
 func Getone(id string) {
 
 	// 调用方法
 	reqBody := new(protos.Request)
 	reqBody.Id = id
+	newmd := metadata.MD{}
+	newmd.Set("caller", "mssiot_user")
 
-	r, err := rpcTestclient.TestClient.GetOne(context.Background(), reqBody)
+	ctx:=CreateCtxByBackground()
+	//ctx = metadata.NewOutgoingContext(ctx, newmd)
+	//ctx = metadata.AppendToOutgoingContext(ctx, "caller", "mssiot_user")
+
+	_, err := rpcTestclient.TestClient.GetOne(ctx, reqBody)
 	if err != nil {
-		fmt.Println("gRPC Getone err:", err)
+		s, _ := status.FromError(err)
+		fmt.Println("code:",s.Code())
+		//fmt.Println("gRPC Getone err:", err)
 		return
 	}
-	fmt.Println("rpc data:", r)
-	fmt.Println("id==", r.Data.Id, "name==",r.Data.Name)
 
 	return
 }

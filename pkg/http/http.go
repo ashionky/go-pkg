@@ -48,3 +48,26 @@ func Post(url string, data interface{}, contentType string) (string, error) {
 	result, _ := ioutil.ReadAll(resp.Body)
 	return string(result), nil
 }
+
+func PostHeader(url string, data interface{}) (string, error) {
+	client := &http.Client{}
+	jsonStr, _ := json.Marshal(data)
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
+	req.Header.Set("Accept", "*/*")
+	req.Header.Set("Connection", "close")
+	req.Header.Set("Content-Type", "application/json")
+	req.Close = true
+	if err != nil {
+		return "", err
+	}
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+	result, _ := ioutil.ReadAll(resp.Body)
+
+	return string(result), nil
+}
+

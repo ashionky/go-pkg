@@ -18,6 +18,7 @@ var TestService = testService{}
 
 func (t testService) GetList(ctx context.Context, req *protos.Request) (*protos.Respose, error) {
 	resp := new(protos.Respose)
+
 	// todo 获取resp
     list :=make([]*protos.User,0)
 	for i := 0; i < 5; i++ {

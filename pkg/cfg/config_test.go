@@ -7,11 +7,20 @@ package cfg
 
 import (
 	"fmt"
+	"github.com/jinzhu/configor"
 	"testing"
 )
 
+type Cfg struct {
+	Sl []string
+}
 func TestInitcfg(t *testing.T) {
-	configFile := "./dev.yml"
-	_ = Initcfg(configFile)
-	fmt.Print(config.Redis.Password)
+	configFile := "./en.json"
+	config:=Cfg{}
+	err := configor.Load(&config, configFile)
+	if err!=nil {
+
+	}
+	fmt.Println(config.Sl[0])
+
 }
