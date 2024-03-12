@@ -44,7 +44,7 @@ go build
 ```
 
 ### 如使用中发现bug；欢迎大佬们指正；谢谢！
-```json
+```
 配置中数据获取:                          --- pkg/cfg  
 mysql:    gorm.io/gorm的使用            ---pkg/db 
           github.com/jinzhu/gorm的使用  ---pkg/zdb
@@ -66,9 +66,8 @@ snowflake:     雪花id的生成              ---pkg/snowflake
 mqtt:                                  ---pkg/mqtt
 redis-lua执行工具方法:                   ---pkg/redisluascriptloader/redis_lua_script_loader.go
 函数调用限速ratelimit:                   --- pkg/ratelimit/
-敏感词组过滤、替换：  dirtyfilter          ---- pkg/dirtyfilter/
-websocket：    web端可通过ws接入websocket           ---- pkg/websocket/
-
+敏感词组过滤、替换：  dirtyfilter         ---- pkg/dirtyfilter/
+websocket：web端可通过ws接入websocket  ---- pkg/websocket/
 ```
 
 
