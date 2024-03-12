@@ -10,10 +10,10 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"go-pkg/constant"
+	"go-pkg/logic"
 	"go-pkg/params"
 	redis "go-pkg/pkg/go-redis"
 	"go-pkg/pkg/vo"
-	"go-pkg/svc"
 	"go-pkg/util"
 	"strings"
 	"time"
@@ -66,7 +66,7 @@ func SignIn(c *gin.Context) {
 		vo.SendFailure(c, constant.InvalidParams, res)
 		return
 	}
-	rsp, err := svc.SignIn(&param)
+	rsp, err := logic.SignIn(&param)
 	if err != nil {
 		vo.SendFailure(c, constant.InternalError, res)
 		return
@@ -78,7 +78,7 @@ func SignIn(c *gin.Context) {
 //登出
 func SignOut(c *gin.Context) {
 	res := vo.GetDefaultResult()
-	err := svc.SignOut(getToken(c))
+	err := logic.SignOut(getToken(c))
 	if err != nil {
 		vo.SendFailure(c, constant.InternalError, res)
 		return

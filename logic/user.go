@@ -3,7 +3,7 @@
  * @create 2020/11/14 1:26 PM
  */
 
-package svc
+package logic
 
 import (
 	"encoding/json"
