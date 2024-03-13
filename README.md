@@ -24,7 +24,7 @@ go-pkg
 ### 使用说明
 ```
 克隆代码
-git clone https://github.com/ashion89/go-pkg.git
+git clone https://github.com/ashionky/go-pkg.git
 
 本地配置代理
 export GOPROXY="https://goproxy.cn,direct"
